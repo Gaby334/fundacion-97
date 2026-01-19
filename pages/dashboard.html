@@ -1,423 +1,421 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Fundación 97</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        
-        .timeline-line {
-            position: absolute;
-            left: 31px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fundación 97 Donor Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b7898",
+                        "primary-dark": "#125a73",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#17191c",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                    boxShadow: {
+                        'soft': '0 2px 10px rgba(0, 0, 0, 0.03)',
+                        'card': '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1)'
+                    }
+                },
+            },
         }
-        
-        .timeline-dot {
-            position: relative;
-            z-index: 10;
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
-        .pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+        /* Custom scrollbar for table/lists */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .hash-text {
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            background: rgba(59, 130, 246, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 20px;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
-
-    <!-- NAV -->
-    <nav class="bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <a href="../index.html" class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <span class="text-xl font-bold">97</span>
-                        </div>
-                        <span class="text-xl font-bold">Fundación 97</span>
-                    </a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div id="walletInfo" class="hidden bg-green-500/20 border border-green-500/30 px-4 py-2 rounded-lg">
-                        <i class="fas fa-wallet mr-2"></i>
-                        <span id="walletAddress" class="font-mono text-sm"></span>
-                    </div>
-                    <button id="connectWallet" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold transition">
-                        <i class="fas fa-wallet mr-2"></i>Conectar Wallet
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTENT -->
-    <div class="container mx-auto px-6 py-12">
-        
-        <!-- HEADER -->
-        <div class="mb-12 fade-in">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                Panel de <span class="text-blue-400">Trazabilidad</span>
-            </h1>
-            <p class="text-gray-400 text-lg">Sigue el viaje de tu donación en tiempo real</p>
-        </div>
-
-        <!-- SEARCH BAR -->
-        <div class="mb-8 fade-in">
-            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
-                <label class="block text-sm font-semibold mb-3">Buscar donación por ID o Hash de transacción</label>
-                <div class="flex gap-3">
-                    <input 
-                        type="text" 
-                        id="searchInput"
-                        placeholder="Ej: 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb8 o DON-2024-001"
-                        class="flex-1 bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
-                    >
-                    <button onclick="searchDonation()" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-semibold transition">
-                        <i class="fas fa-search mr-2"></i>Buscar
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- GRID LAYOUT -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- LEFT COLUMN - DONATION SUMMARY -->
-            <div class="lg:col-span-1 space-y-6">
-                
-                <!-- Card resumen -->
-                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
-                    <h2 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-file-invoice-dollar text-blue-400 mr-3"></i>
-                        Resumen de Donación
-                    </h2>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <div class="text-sm text-gray-400 mb-1">ID de Donación</div>
-                            <div class="font-bold text-lg">DON-2024-001</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-sm text-gray-400 mb-1">Monto Total</div>
-                            <div class="font-bold text-3xl text-blue-400">500 €</div>
-                            <div class="text-sm text-gray-400">≈ 0.15 ETH</div>
-                        </div>
-                        
-                        <div class="border-t border-white/10 pt-4">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-400">Al proyecto</span>
-                                <span class="font-bold text-green-400">485 € (97%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Plataforma</span>
-                                <span class="font-bold">15 € (3%)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="border-t border-white/10 pt-4">
-                            <div class="text-sm text-gray-400 mb-1">Proyecto</div>
-                            <div class="font-semibold">Agua Potable - Guatemala</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-sm text-gray-400 mb-1">Fecha</div>
-                            <div class="font-semibold">15 Enero 2026, 14:23</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-sm text-gray-400 mb-1">Estado</div>
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse"></div>
-                                <span class="text-green-400 font-semibold">Fondos Recibidos</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card blockchain -->
-                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
-                    <h3 class="text-lg font-bold mb-4 flex items-center">
-                        <i class="fas fa-cube text-purple-400 mr-3"></i>
-                        Verificación Blockchain
-                    </h3>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <div class="text-xs text-gray-400 mb-1">Transaction Hash</div>
-                            <div class="hash-text break-all">0x742d35...595f0bEb8</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-xs text-gray-400 mb-1">Smart Contract</div>
-                            <div class="hash-text break-all">0x8ba1f1...9e8c3d2a</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-xs text-gray-400 mb-1">Red</div>
-                            <div class="font-semibold">Polygon (Mumbai Testnet)</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-xs text-gray-400 mb-1">Block Number</div>
-                            <div class="font-semibold">#42,567,891</div>
-                        </div>
-                        
-                        <div>
-                            <div class="text-xs text-gray-400 mb-1">Confirmaciones</div>
-                            <div class="font-semibold text-green-400">128 confirmaciones</div>
-                        </div>
-                        
-                        <button class="w-full bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/30 px-4 py-2 rounded-lg text-sm font-semibold transition mt-4">
-                            <i class="fas fa-external-link-alt mr-2"></i>
-                            Ver en Polygonscan
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- RIGHT COLUMN - TIMELINE -->
-            <div class="lg:col-span-2">
-                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
-                    <h2 class="text-2xl font-bold mb-8 flex items-center">
-                        <i class="fas fa-route text-blue-400 mr-3"></i>
-                        Viaje de tu Donación
-                    </h2>
-
-                    <!-- Timeline -->
-                    <div class="relative pl-16">
-                        <div class="timeline-line"></div>
-
-                        <!-- Step 1 - Completed -->
-                        <div class="mb-12 relative fade-in">
-                            <div class="absolute -left-16 timeline-dot">
-                                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50">
-                                    <i class="fas fa-check text-2xl"></i>
-                                </div>
-                            </div>
-                            <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-5">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold">Donación Recibida</h3>
-                                    <span class="text-sm text-gray-400">15 Ene, 14:23</span>
-                                </div>
-                                <p class="text-gray-400 mb-3">Tu donación de 500 € ha sido confirmada en blockchain</p>
-                                <div class="bg-black/30 rounded-lg p-3 text-sm">
-                                    <div class="flex justify-between mb-1">
-                                        <span class="text-gray-400">Hash:</span>
-                                        <span class="hash-text">0x742d35...5f0bEb8</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-400">Gas Fee:</span>
-                                        <span class="font-semibold">0.0012 ETH</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 2 - Completed -->
-                        <div class="mb-12 relative fade-in" style="animation-delay: 0.2s;">
-                            <div class="absolute -left-16 timeline-dot">
-                                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50">
-                                    <i class="fas fa-code-branch text-2xl"></i>
-                                </div>
-                            </div>
-                            <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold">Smart Contract Ejecutado</h3>
-                                    <span class="text-sm text-gray-400">15 Ene, 14:23</span>
-                                </div>
-                                <p class="text-gray-400 mb-3">División automática de fondos según contrato programado</p>
-                                <div class="space-y-2">
-                                    <div class="bg-black/30 rounded-lg p-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-400">→ Al proyecto</span>
-                                            <span class="text-green-400 font-bold">485 € (97%)</span>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 font-display min-h-screen flex overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-surface-light border-r border-slate-200 hidden md:flex flex-col z-20 h-screen sticky top-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-2xl">favorite</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">Fundación 97</h1>
+<p class="text-slate-500 text-xs font-medium">Transparency First</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 flex flex-col gap-2 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined icon-filled">dashboard</span>
+<span class="text-sm font-semibold">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="tracker.html">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="text-sm font-medium">My Donations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="proyectos.html">
+<span class="material-symbols-outlined">map</span>
+<span class="text-sm font-medium">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-sm font-medium">Wallet</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-100">
+<div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="User profile avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfc3Vs7gLFmM6Up2QOHy-OYu07s06QYdX30MdKHJTeNPlCc0tRXILfJKLsPvIyq5aNKsMXIVSrEbCIsvrPtfEe2-nSbukhrHSSwD7UCPcFfuhhTNSYJSxmEGfCkC8jzfrgEOSC2S4-_Wg2zWuRqoOzhIT5hXhBJbxE9UQONvFD2MVHoJfzOTtPfEhfap_WTfnCSu3LK_i-x1YruLbJqUr6ns35fWJCcrUsRgOnJgaYCtTTe3S2_Rr5PyJGZo22SLc4rmSY8tnnjsg');"></div>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Elena R.</p>
+<p class="text-xs text-slate-500 truncate">Pro Donor</p>
+</div>
+</div>
+<button class="w-full text-xs font-semibold text-slate-600 hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">logout</span> Sign Out
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-16 bg-surface-light border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-10">
+<div class="flex items-center gap-2 text-slate-500">
+<span class="material-symbols-outlined text-xl">home</span>
+<span class="text-slate-300">/</span>
+<span class="text-sm font-medium text-slate-900">Dashboard</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-100">
+<div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-xs font-bold">Polygon Mainnet</span>
+</div>
+<div class="h-8 w-[1px] bg-slate-200 mx-1"></div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end mr-2 hidden sm:flex">
+<span class="text-xs font-medium text-slate-500">Balance</span>
+<span class="text-sm font-bold text-slate-900">2,450.00 USDC</span>
+</div>
+<button class="flex items-center gap-2 pl-3 pr-2 py-1.5 bg-slate-100 hover:bg-slate-200 transition-colors rounded-lg border border-slate-200 group">
+<span class="size-5 rounded-full bg-gradient-to-tr from-blue-500 to-primary"></span>
+<span class="text-sm font-bold text-slate-700 font-mono group-hover:text-slate-900">0x71...4A92</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">expand_more</span>
+</button>
+<button class="size-9 flex items-center justify-center rounded-full bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors relative">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scroll p-6 lg:p-10">
+<div class="max-w-7xl mx-auto flex flex-col gap-8">
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Stat 1 -->
+<div class="bg-surface-light rounded-xl p-6 shadow-card border border-slate-100 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">payments</span>
+</div>
+<div>
+<p class="text-slate-500 font-medium text-sm mb-1">Total Contributed</p>
+<h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">$12,450.00</h3>
+</div>
+<div class="flex items-center gap-1 text-green-600 text-sm font-bold mt-auto">
+<span class="material-symbols-outlined text-lg">trending_up</span>
+<span>+15% this month</span>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface-light rounded-xl p-6 shadow-card border border-slate-100 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">handshake</span>
+</div>
+<div>
+<p class="text-slate-500 font-medium text-sm mb-1">Projects Supported</p>
+<h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">14</h3>
+</div>
+<div class="flex -space-x-2 mt-auto">
+<div class="size-8 rounded-full ring-2 ring-white bg-cover bg-center" data-alt="Project logo 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVd5vwH_DxLCwrX2ANSS0o7yS6jlZsRb9iz4zuxXUHsvebXtnpdeGJE6uxPGa1Gfd7QzLdUPZ7wfe088611VGifenweQ-RwNVqfCv1nCMRTj107RRakA-aZANtDli_URbaBxIr_IBpUOQcC0FlPTFqtR6Rl60jGIxL4ehHV5dj9TnDlJd1xtIbNGW3JNJSpPYlfniXORS_lYGYnwLIY_zfEooIEU0vEgd9XSxR19-6tAi9B38WI2T7DffOjQl_UvpWoPwd0cwbEiE');"></div>
+<div class="size-8 rounded-full ring-2 ring-white bg-cover bg-center" data-alt="Project logo 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA20Gy32_vNox_W7DQgd9vhVwFatz0oRRSIXo3Qbqox1oNglQDjfJZSG57Y73EKRI2Yl4ruTAFzh7HqhdbVtWS7cW8cVIvqkGuCbQ62IvbeJyV58k4jixWJL1wQaQTp6mbLmnHYznJjKcg5m0wfQ2BvWaFUJ7uZ2-hrA4VqbnXxw9X_vUs8btz7bAZRGpG7pyj67fYH4w3RkW7UR5J_ZMaS0g_fRAMU677gBy9qlH4CAKD_IR4Rzr1V1Rx2SfySuUWtZHMtCCD5Jwk');"></div>
+<div class="size-8 rounded-full ring-2 ring-white bg-cover bg-center" data-alt="Project logo 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDllXVG-g0Y6u29nsH1jOy33I36k6JRo8rR44UQIfVt-ReAL4buIZ9OKlKHz19J4rs2aWA53HJx4yn9JEv9vPrQwnUSQc3e5ZVz1Eda1y-oyzQMpazqMUfTtpmiyqp5lx98tNMogYN7DbHqvSgoczG7ny6YUiw9VOloHrjbfqjGC_ILbrNvpdeBW1b8_CKmR3l9iZ8kKcTXoJkZ1W6xqyHyou4CnCmpX49VWmoFP3F5JvvNQgGk3npABqv6QGcsYz0yR7bIhRV-RXM');"></div>
+<div class="size-8 rounded-full ring-2 ring-white bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">+11</div>
+</div>
+</div>
+<!-- Stat 3: Efficiency Viz -->
+<div class="bg-surface-light rounded-xl p-6 shadow-card border border-slate-100 flex items-center justify-between h-40 relative overflow-hidden">
+<div class="flex flex-col h-full justify-between z-10">
+<div>
+<p class="text-slate-500 font-medium text-sm mb-1">Total Impact Efficiency</p>
+<div class="flex items-baseline gap-1">
+<h3 class="text-3xl font-extrabold text-primary tracking-tight">97%</h3>
+<span class="text-sm text-slate-400 font-medium">Direct to Project</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-bold">Verified</span>
+<span class="text-xs text-slate-400">Audited by Certik</span>
+</div>
+</div>
+<!-- Simple CSS Donut representation -->
+<div class="relative size-24 shrink-0">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<!-- Progress Circle (97%) -->
+<path class="text-primary drop-shadow-md" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="97, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fee</span>
+<span class="text-xs font-bold text-slate-600">3%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Grid Split -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Left Column: Active Projects & Fee Breakdown -->
+<div class="xl:col-span-2 flex flex-col gap-8">
+<!-- Active Projects Section -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold text-slate-900">Active Projects</h2>
+<a class="text-sm font-semibold text-primary hover:text-primary-dark" href="proyectos.html">View All Projects</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Project Card 1 -->
+<div class="bg-surface-light border border-slate-100 rounded-xl p-4 shadow-card hover:shadow-lg transition-shadow duration-300">
+<div class="h-40 rounded-lg bg-cover bg-center mb-4 relative" data-alt="School children studying in a new classroom" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAyO8eyLtVRehuZQ7MvnJYi5q9rWojdK4CHmhPJc7oTyRpMeXExJyTMY6CSEC-1jKM6dOagV7Uzj2FImzmZND_495xRjmpGclBVXskLU7SPSMb811dhmt7jQ6e5pqmvo5QlrhBCrthEvvgrXNEfmDlheu5QJiMHclEq0gQgjESOlTEhQUIb-tY8gUrpU9rVWoQAW87Pqpy2k3zLna2FgKvC8IRrHibmRIZFHaLSJp_HW2tTdk9sVbbTwNNr_Bv-pICIXXmz00pJu6I');">
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-800 shadow-sm">
+                                            Education
                                         </div>
-                                    </div>
-                                    <div class="bg-black/30 rounded-lg p-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-400">→ Costes plataforma</span>
-                                            <span class="font-bold">15 € (3%)</span>
+</div>
+<h3 class="font-bold text-lg text-slate-900 mb-1">La Guajira School Rebuild</h3>
+<p class="text-slate-500 text-sm mb-4 line-clamp-2">Constructing 3 new solar-powered classrooms for the Wayuu indigenous community.</p>
+<div class="flex justify-between text-xs font-semibold mb-2">
+<span class="text-primary">$24,500 Raised</span>
+<span class="text-slate-400">Goal: $30,000</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 mb-4 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 82%"></div>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
+                                        Donate Now
+                                    </button>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-surface-light border border-slate-100 rounded-xl p-4 shadow-card hover:shadow-lg transition-shadow duration-300">
+<div class="h-40 rounded-lg bg-cover bg-center mb-4 relative" data-alt="Clean water installation in rural village" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCijtA9MfflJAKWmq5O7aG7CMQ2y0-ot11KwHqfG3yJcG3YCkR0EMmJk_cET31WCTzdXawmZgMf8AZ6iDLd51K5ptqU1MUfm7aNMlOHLMh3J9lY1s4F8TdgXsKbcCDvnhuF0STcg9-8GxX6BJ04hlKRbVtpz30P7nUt9hE-1BfE7DI_sCZZNeMT_ksSW-jZ3xbOhmXDGYyEwyUnfNw721Xg5GPz3LaDQ5NqHgqfi1oHZNRhU-dkVs8rgumvqXkXJ2OcOPfWS7lk9Lg');">
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-800 shadow-sm">
+                                            Infrastructure
                                         </div>
-                                    </div>
+</div>
+<h3 class="font-bold text-lg text-slate-900 mb-1">Clean Water for All</h3>
+<p class="text-slate-500 text-sm mb-4 line-clamp-2">Implementing blockchain-verified water filtration systems in drought-affected zones.</p>
+<div class="flex justify-between text-xs font-semibold mb-2">
+<span class="text-primary">$8,200 Raised</span>
+<span class="text-slate-400">Goal: $15,000</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 mb-4 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 54%"></div>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
+                                        Donate Now
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Fee Structure Detail (Banner) -->
+<div class="bg-slate-900 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 text-white relative overflow-hidden shadow-xl">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+<div class="relative z-10 flex-1">
+<h3 class="text-2xl font-bold mb-2">Where does your money go?</h3>
+<p class="text-slate-300 mb-6 max-w-md">We believe in radical transparency. Our smart contracts automatically route 97% of every transaction directly to the project wallet.</p>
+<div class="flex gap-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary"></span>
+<span class="font-bold">97% Project Execution</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-slate-600"></span>
+<span class="font-bold text-slate-400">3% Platform/Gas</span>
+</div>
+</div>
+</div>
+<!-- Visual Graphic -->
+<div class="relative z-10 shrink-0">
+<div class="flex gap-1 h-32 items-end">
+<div class="w-16 bg-primary rounded-t-lg relative group h-full flex items-end justify-center">
+<span class="absolute -top-8 text-xl font-bold">97%</span>
+</div>
+<div class="w-16 bg-slate-700 rounded-t-lg relative group h-[3%] flex items-end justify-center">
+<span class="absolute -top-8 text-sm font-bold text-slate-400">3%</span>
+</div>
+</div>
+<div class="w-36 h-0.5 bg-slate-700 mt-0"></div>
+</div>
+</div>
+</div>
+<!-- Right Column: Transparency Feed -->
+<div class="xl:col-span-1">
+<div class="bg-surface-light border border-slate-100 rounded-xl shadow-card h-full flex flex-col">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-green-50 text-green-600 rounded-lg">
+<span class="material-symbols-outlined text-lg">fact_check</span>
+</div>
+<h2 class="font-bold text-slate-900">Live Feed</h2>
+</div>
+<div class="flex items-center gap-1 text-xs text-slate-400">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+                                    Live
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3 - Completed -->
-                        <div class="mb-12 relative fade-in" style="animation-delay: 0.4s;">
-                            <div class="absolute -left-16 timeline-dot">
-                                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
-                                    <i class="fas fa-exchange-alt text-2xl"></i>
-                                </div>
-                            </div>
-                            <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-5">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold">Transferido a ONG</h3>
-                                    <span class="text-sm text-gray-400">15 Ene, 14:25</span>
-                                </div>
-                                <p class="text-gray-400 mb-3">Fondos enviados a la wallet de la organización verificada</p>
-                                <div class="bg-black/30 rounded-lg p-3 text-sm">
-                                    <div class="flex justify-between mb-1">
-                                        <span class="text-gray-400">Destinatario:</span>
-                                        <span class="hash-text">0x9c4f...a2b8</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-400">ONG:</span>
-                                        <span class="font-semibold">Water For Life Guatemala</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 4 - In Progress -->
-                        <div class="mb-12 relative fade-in" style="animation-delay: 0.6s;">
-                            <div class="absolute -left-16 timeline-dot">
-                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/50 pulse">
-                                    <i class="fas fa-tools text-2xl"></i>
-                                </div>
-                            </div>
-                            <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-5">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold">Proyecto en Ejecución</h3>
-                                    <span class="text-sm bg-yellow-500/20 px-3 py-1 rounded-full">En progreso</span>
-                                </div>
-                                <p class="text-gray-400 mb-3">Tu donación está siendo utilizada para instalar sistema de filtración</p>
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <div class="flex justify-between text-sm mb-2">
-                                        <span class="text-gray-400">Progreso del proyecto</span>
-                                        <span class="font-bold">67%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-700 rounded-full h-2">
-                                        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full" style="width: 67%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 5 - Pending -->
-                        <div class="relative fade-in" style="animation-delay: 0.8s;">
-                            <div class="absolute -left-16 timeline-dot">
-                                <div class="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center border-2 border-gray-500">
-                                    <i class="fas fa-heart text-2xl text-gray-400"></i>
-                                </div>
-                            </div>
-                            <div class="bg-gray-500/10 border border-gray-500/30 rounded-lg p-5 opacity-60">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold">Impacto Verificado</h3>
-                                    <span class="text-sm bg-gray-500/20 px-3 py-1 rounded-full">Pendiente</span>
-                                </div>
-                                <p class="text-gray-400">Recibirás informe con fotos y datos del beneficiario cuando se complete</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Impact metrics -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in">
-                        <i class="fas fa-users text-4xl text-blue-400 mb-3"></i>
-                        <div class="text-3xl font-bold mb-1">247</div>
-                        <div class="text-sm text-gray-400">Personas beneficiadas</div>
-                    </div>
-                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.1s;">
-                        <i class="fas fa-tint text-4xl text-cyan-400 mb-3"></i>
-                        <div class="text-3xl font-bold mb-1">15,000L</div>
-                        <div class="text-sm text-gray-400">Litros de agua/día</div>
-                    </div>
-                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.2s;">
-                        <i class="fas fa-leaf text-4xl text-green-400 mb-3"></i>
-                        <div class="text-3xl font-bold mb-1">-2.1</div>
-                        <div class="text-sm text-gray-400">Toneladas CO₂/año</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <script>
-        // Wallet connection
-        let web3;
-        let userAccount;
-
-        document.getElementById('connectWallet').addEventListener('click', async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    userAccount = accounts[0];
-                    
-                    document.getElementById('walletAddress').textContent = 
-                        userAccount.substring(0, 6) + '...' + userAccount.substring(38);
-                    document.getElementById('walletInfo').classList.remove('hidden');
-                    document.getElementById('connectWallet').innerHTML = 
-                        '<i class="fas fa-check-circle mr-2"></i>Conectada';
-                    
-                    web3 = new Web3(window.ethereum);
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Error conectando wallet');
-                }
-            } else {
-                alert('Por favor instala MetaMask para usar esta función');
-                window.open('https://metamask.io/download/', '_blank');
-            }
-        });
-
-        // Search function
-        function searchDonation() {
-            const searchValue = document.getElementById('searchInput').value;
-            if (searchValue.trim() === '') {
-                alert('Por favor ingresa un ID o hash de transacción');
-                return;
-            }
-            
-            // Simulación de búsqueda
-            console.log('Buscando:', searchValue);
-            alert('Función de búsqueda en desarrollo. ID buscado: ' + searchValue);
-        }
-
-        // Enter key support
-        document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchDonation();
-            }
-        });
-    </script>
-
-</body>
-</html>
+</div>
+<div class="flex-1 overflow-y-auto max-h-[600px] p-2 custom-scroll">
+<div class="flex flex-col gap-1">
+<!-- Feed Item 1 -->
+<div class="p-3 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer border border-transparent hover:border-slate-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                                                0x8a...2b91
+                                                <span class="material-symbols-outlined text-[12px] opacity-0 group-hover:opacity-100 text-primary">open_in_new</span>
+</span>
+<span class="text-xs text-slate-400">2 min ago</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-900">Donated 500 USDC</p>
+<p class="text-xs text-slate-500">to La Guajira School</p>
+</div>
+<div class="size-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="p-3 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer border border-transparent hover:border-slate-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                                                0x71...f432
+                                                <span class="material-symbols-outlined text-[12px] opacity-0 group-hover:opacity-100 text-primary">open_in_new</span>
+</span>
+<span class="text-xs text-slate-400">14 min ago</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-900">Donated 1,200 MATIC</p>
+<p class="text-xs text-slate-500">to Clean Water for All</p>
+</div>
+<div class="size-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 3 -->
+<div class="p-3 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer border border-transparent hover:border-slate-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                                                0x3d...99aa
+                                                <span class="material-symbols-outlined text-[12px] opacity-0 group-hover:opacity-100 text-primary">open_in_new</span>
+</span>
+<span class="text-xs text-slate-400">45 min ago</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-900">Project Milestone Unlocked</p>
+<p class="text-xs text-slate-500">School Foundation Laid</p>
+</div>
+<div class="size-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">flag</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 4 -->
+<div class="p-3 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer border border-transparent hover:border-slate-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                                                0x12...bb41
+                                                <span class="material-symbols-outlined text-[12px] opacity-0 group-hover:opacity-100 text-primary">open_in_new</span>
+</span>
+<span class="text-xs text-slate-400">1 hr ago</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-900">Donated 100 USDC</p>
+<p class="text-xs text-slate-500">to Urban Garden Initiative</p>
+</div>
+<div class="size-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 5 -->
+<div class="p-3 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer border border-transparent hover:border-slate-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                                                0x99...cc21
+                                                <span class="material-symbols-outlined text-[12px] opacity-0 group-hover:opacity-100 text-primary">open_in_new</span>
+</span>
+<span class="text-xs text-slate-400">2 hrs ago</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-900">Wallet Connected</p>
+<p class="text-xs text-slate-500">New donor joined</p>
+</div>
+<div class="size-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">person_add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-slate-100 bg-slate-50/50 rounded-b-xl text-center">
+<a class="text-xs font-bold text-primary hover:underline" href="#">View All On Etherscan</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-12 mb-6 border-t border-slate-200 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs">
+<p>© 2024 Fundación 97. Blockchain Verified Philanthropy.</p>
+<div class="flex gap-4 mt-2 md:mt-0">
+<a class="hover:text-slate-600" href="#">Privacy Policy</a>
+<a class="hover:text-slate-600" href="#">Smart Contract Audit</a>
+<a class="hover:text-slate-600" href="#">Help Center</a>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

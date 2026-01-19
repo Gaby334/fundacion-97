@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fundación 97 - Transparency Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b7898",
+                        "primary-dark": "#135d76",
+                        "secondary": "#9FD49C",
+                        "accent": "#E3B24F",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#121212",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e2023",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#2d3035",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 hidden md:flex flex-col border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark z-20">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 shadow-sm" data-alt="Abstract geometric logo in teal and white" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBB-_oL37YpJAZdRFOdP6Rx1_xjJXdgWY4bCSYxfGGkXrOMHPCSYlXnLD8BvoEgpetkIyakfIJQbxkvIU_6jwKX59kc3KOdOh0SxjNBQWhhBN8eTF1dXNrrMLRUih0j-gbBMr5Z7DI_bDZIiXStBsXIu3H9oVFnlRcwj6q6SbjIZpAic9FcUP0g7m7rkSdHkNqDKrAxcfzjCaCU3-SSbt85jEhSa3vn-cG62RtpnNVWW79-lNXiv2FH5uJU8vQelh4jLf2JDpGWPJk");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-none tracking-tight">Fundación 97</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-1">Radical Transparency</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="dashboard.html">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-primary-400" href="tracker.html">
+<span class="material-symbols-outlined text-[20px] fill-1">folder_open</span>
+<span class="text-sm font-medium">My Donations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="proyectos.html">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">map</span>
+<span class="text-sm font-medium">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">account_balance_wallet</span>
+<span class="text-sm font-medium">Wallet</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">JD</div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-xs font-bold truncate">John Doe</span>
+<span class="text-[10px] text-slate-500 truncate">Donor Level 3</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col relative overflow-y-auto overflow-x-hidden">
+<!-- Top Bar -->
+<header class="sticky top-0 z-10 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary" href="dashboard.html">Dashboard</a>
+<span class="text-slate-300">/</span>
+<a class="hover:text-primary" href="tracker.html">My Donations</a>
+<span class="text-slate-300">/</span>
+<span class="text-slate-900 dark:text-slate-200 font-medium">Tracking</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+</span>
+<span class="text-xs font-bold uppercase tracking-wider text-secondary">Live Tracking Active</span>
+</div>
+</header>
+<div class="p-6 md:p-8 max-w-7xl mx-auto w-full space-y-6">
+<!-- Page Header & Summary -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+<div class="space-y-2">
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">Clean Water Access - Village X</h2>
+<div class="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">tag</span> Donation ID: #8821...9A</span>
+<span class="hidden md:block w-1 h-1 bg-slate-300 rounded-full"></span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">calendar_today</span> Started: Oct 24, 2023</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark px-4 py-3 rounded-xl shadow-sm">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-slate-500 uppercase">Total Raised</span>
+<span class="text-xl font-bold text-slate-900 dark:text-white">15.4 ETH</span>
+</div>
+<div class="h-8 w-px bg-border-light dark:bg-border-dark"></div>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-slate-500 uppercase">Est. Impact</span>
+<span class="text-xl font-bold text-slate-900 dark:text-white">450 Families</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Col: Timeline (8 cols) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Timeline Section -->
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">timeline</span>
+                                    Donation Journey
+                                </h3>
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded uppercase">Verified by Chainlink</span>
+</div>
+<div class="relative pl-4">
+<!-- Line -->
+<div class="absolute left-[27px] top-2 bottom-4 w-0.5 bg-border-light dark:bg-border-dark"></div>
+<!-- Step 1: Completed -->
+<div class="relative flex gap-6 pb-10 group">
+<div class="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary shadow ring-4 ring-white dark:ring-surface-dark">
+<span class="material-symbols-outlined text-white text-[14px] font-bold">check</span>
+</div>
+<div class="flex flex-col flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 -mt-2 border border-transparent hover:border-primary/20 transition-all">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Donation Received</span>
+<span class="text-xs text-slate-500 font-mono">10:00 AM</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Funds successfully debited from wallet and entered the smart contract escrow.</p>
+<div class="flex items-center gap-2">
+<span class="text-[10px] uppercase font-bold text-slate-400">TX Hash:</span>
+<code class="text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-primary">0x8a...4b12</code>
+</div>
+</div>
+</div>
+<!-- Step 2: Completed -->
+<div class="relative flex gap-6 pb-10 group">
+<div class="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary shadow ring-4 ring-white dark:ring-surface-dark">
+<span class="material-symbols-outlined text-white text-[14px] font-bold">lock_clock</span>
+</div>
+<div class="flex flex-col flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 -mt-2 border border-transparent hover:border-primary/20 transition-all">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Smart Contract Escrow</span>
+<span class="text-xs text-slate-500 font-mono">10:05 AM</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Funds locked. 97% allocation verified. Automatic trigger set for disbursement upon vendor signature.</p>
+<div class="flex items-center gap-2">
+<span class="text-[10px] uppercase font-bold text-slate-400">Contract:</span>
+<code class="text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-primary">0x71...9A2</code>
+</div>
+</div>
+</div>
+<!-- Step 3: Current -->
+<div class="relative flex gap-6 pb-10 group">
+<div class="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white border-2 border-primary shadow ring-4 ring-white dark:ring-surface-dark">
+<div class="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="flex flex-col flex-1 bg-white dark:bg-surface-dark border border-primary/30 shadow-lg shadow-primary/5 rounded-lg p-4 -mt-2 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-6xl text-primary">shopping_cart</span>
+</div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-bold text-primary">Material Purchase &amp; Verification</span>
+<span class="text-xs text-primary font-bold font-mono">IN PROGRESS</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Project manager is purchasing water pumps. Awaiting receipt upload and oracle verification.</p>
+<div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5 mb-1">
+<div class="bg-primary h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+<span class="text-[10px] text-slate-500 text-right">65% Validated</span>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="relative flex gap-6">
+<div class="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 ring-4 ring-white dark:ring-surface-dark">
+<span class="material-symbols-outlined text-slate-400 text-[14px]">flag</span>
+</div>
+<div class="flex flex-col flex-1 opacity-60">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-bold text-slate-500 dark:text-slate-400">Project Completion</span>
+<span class="text-xs text-slate-400">Est. Oct 30</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts / Fund Flow -->
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Fund Velocity (Real-time)</h3>
+<div class="flex gap-2">
+<span class="h-2 w-2 rounded-full bg-primary"></span>
+<span class="text-xs text-slate-500">Inflow</span>
+<span class="h-2 w-2 rounded-full bg-secondary ml-2"></span>
+<span class="text-xs text-slate-500">Outflow</span>
+</div>
+</div>
+<!-- Mock Chart CSS -->
+<div class="h-48 flex items-end justify-between gap-1 md:gap-2 w-full pt-4">
+<div class="w-full bg-primary/20 h-[20%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">0.2 ETH</div></div>
+<div class="w-full bg-primary/20 h-[35%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-primary/20 h-[50%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-primary/20 h-[45%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[10%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[15%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-primary/20 h-[60%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-primary/20 h-[80%] rounded-t-sm relative group hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[30%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[45%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[25%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-secondary/20 h-[10%] rounded-t-sm relative group hover:bg-secondary/40 transition-colors"></div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 mt-2 font-mono uppercase">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>24:00</span>
+</div>
+</div>
+</div>
+<!-- Right Col: Financials & Validation (4 cols) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Smart Contract Validator Block -->
+<div class="bg-primary-dark rounded-2xl p-6 text-white relative overflow-hidden shadow-lg group">
+<!-- Decorative background pattern -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-white/10 transition-colors"></div>
+<div class="absolute bottom-0 left-0 w-24 h-24 bg-accent/20 rounded-full -ml-12 -mb-12 blur-xl"></div>
+<div class="relative z-10">
+<h3 class="font-bold text-lg mb-1">Verify on Blockchain</h3>
+<p class="text-primary-100 text-sm mb-4">Don't trust us. Trust the code. View the immutable record.</p>
+<div class="bg-black/30 rounded-lg p-3 mb-4 backdrop-blur-sm border border-white/10">
+<p class="text-[10px] text-primary-200 uppercase font-bold mb-1">Smart Contract Address</p>
+<div class="flex items-center justify-between gap-2">
+<code class="text-xs font-mono text-white truncate">0x71C...9A2</code>
+<button class="text-white/70 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-white text-primary font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary-50 transition-colors">
+<span>Validate on PolygonScan</span>
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Fee Breakdown -->
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-sm">
+<h3 class="text-lg font-bold mb-6">97% Model Breakdown</h3>
+<div class="flex items-center justify-center mb-6 relative">
+<!-- Custom donut representation using conic-gradient -->
+<div class="w-40 h-40 rounded-full relative" style="background: conic-gradient(#1b7898 0% 97%, #E3B24F 97% 100%);">
+<div class="absolute inset-4 bg-surface-light dark:bg-surface-dark rounded-full flex flex-col items-center justify-center">
+<span class="text-3xl font-bold text-slate-900 dark:text-white">97%</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest">Project</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-1 h-8 bg-primary rounded-full mt-1"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-bold text-slate-800 dark:text-slate-200">Direct Impact</span>
+<span class="text-sm font-bold text-primary">97%</span>
+</div>
+<p class="text-xs text-slate-500">Funds go directly to verified project wallets and material vendors.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-1 h-8 bg-accent rounded-full mt-1"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-bold text-slate-800 dark:text-slate-200">Operations</span>
+<span class="text-sm font-bold text-accent">3%</span>
+</div>
+<!-- Expanded details for radical transparency -->
+<div class="bg-slate-50 dark:bg-slate-800 p-2 rounded text-[11px] text-slate-500 space-y-1 mt-1">
+<div class="flex justify-between"><span>Gas Fees</span> <span>0.8%</span></div>
+<div class="flex justify-between"><span>Server Costs</span> <span>1.2%</span></div>
+<div class="flex justify-between"><span>Security Audit</span> <span>1.0%</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Details List -->
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-sm">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Chain Metadata</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<span class="text-slate-600 dark:text-slate-400">Network</span>
+<span class="font-medium text-slate-900 dark:text-white flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Polygon Mainnet</span>
+</div>
+<div class="flex justify-between items-center text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<span class="text-slate-600 dark:text-slate-400">Block Height</span>
+<span class="font-mono text-slate-900 dark:text-white">18,492,041</span>
+</div>
+<div class="flex justify-between items-center text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<span class="text-slate-600 dark:text-slate-400">Confirmations</span>
+<span class="font-mono text-slate-900 dark:text-white">12,402</span>
+</div>
+<div class="flex justify-between items-center text-sm py-2">
+<span class="text-slate-600 dark:text-slate-400">Contract Type</span>
+<span class="font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-xs">ERC-1155 Escrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Verified Milestones (Full Width) -->
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+                        Verified Milestones
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Milestone Card 1 -->
+<div class="group bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="h-40 bg-slate-200 relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Close up of water pump machinery installed in dirt" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB4deyhe7NeiUNuwjexFeoQOR9sYFFWDi_0U2QcpD73bd-HE-u91tGK3pQUPP8nLyTrL_8z0173C6be94Px-qtTU5IJjMNsSgPJ3h4-6O9xZs4SzGgp5huIeKrRHMTBrcrQeovoerkc-Aysq52naFMHxixqbSSQz4jUJAvj05OoLL_aytT5m4TNKXQMOgDjChrQygCH1q5ZDBtQ5l69ni1EI_kOTrvpN4BHzOWCspuW0u_FwUXSxyG8OsPd8QQhBDKKR4ecXQJ7nt4");'></div>
+<div class="absolute top-2 right-2 bg-secondary text-black text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> VERIFIED
+                                </div>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 12, 2023
+                                </div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Site Preparation Complete</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">Ground leveling and initial drilling site confirmation by lead engineer.</p>
+<a class="text-xs font-bold text-primary flex items-center gap-1 hover:underline" href="#">
+                                    View Proof (PDF) <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Milestone Card 2 -->
+<div class="group bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="h-40 bg-slate-200 relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Receipt paper on a wooden table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDawXTM8-ihcaYmGAG6JWF5phvWQNOw_XvSe7G3W3BRg57JNm8btF8aYxYENIbRUrqwo3Jdo6z3QIqxzjHA-yYo7s3Oy52w4eDXhP726l71NvMUL19_F2RedY-Mtn4OJOjzypugBnWHxROx2f3-pv4xm85H8rB6JIkoytoJoenGYh5RaekeGo-KjdQGygrU2OLC_MVb6sNpMLsewAeGRL_JyFhEM9bG-xKJlC5eGXUo3FYQh4baSbwq0_g6zbgHe4-cpjDhHg4XCDY");'></div>
+<div class="absolute top-2 right-2 bg-secondary text-black text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> VERIFIED
+                                </div>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 15, 2023
+                                </div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Equipment Purchase</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">Receipt #9921 for water pump mechanism and piping verified against budget.</p>
+<a class="text-xs font-bold text-primary flex items-center gap-1 hover:underline" href="#">
+                                    View Receipt <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Milestone Card 3 -->
+<div class="group bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="h-40 bg-slate-200 relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Satellite map view of a village area" data-location="Village X Map" style='background-image: url("https://placeholder.pics/svg/300");'></div>
+<div class="absolute top-2 right-2 bg-secondary text-black text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> VERIFIED
+                                </div>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 18, 2023
+                                </div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Location Verified</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">GPS coordinates 12.34, 56.78 confirmed on-chain via location oracle.</p>
+<a class="text-xs font-bold text-primary flex items-center gap-1 hover:underline" href="#">
+                                    View on Map <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Milestone Card 4 (Pending) -->
+<div class="group bg-slate-50 dark:bg-slate-800/30 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl overflow-hidden flex flex-col items-center justify-center p-6 opacity-60">
+<div class="h-12 w-12 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-slate-400">more_horiz</span>
+</div>
+<h4 class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Final Installation</h4>
+<p class="text-xs text-slate-400 text-center">Expected: Oct 30</p>
+<span class="mt-4 text-[10px] uppercase font-bold tracking-widest text-slate-400">Locked</span>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="pt-10 pb-4 text-center">
+<p class="text-xs text-slate-400 dark:text-slate-600">
+                        Blockchain transparency layer powered by Polygon. <br/>
+                        Fundación 97 © 2023. All rights reserved.
+                    </p>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>
