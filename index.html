@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación 97 - Transparencia Radical en Donaciones</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Web3.js para blockchain -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Animación suave para elementos */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Efecto gradiente animado */
+        .gradient-animate {
+            background: linear-gradient(270deg, #3b82f6, #8b5cf6, #ec4899);
+            background-size: 600% 600%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Botón con efecto hover */
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Card con glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+
+    <!-- NAVEGACIÓN -->
+    <nav class="fixed top-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">97</span>
+                    </div>
+                    <span class="text-xl font-bold">Fundación 97</span>
+                </div>
+                
+                <!-- Menú -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="hover:text-blue-400 transition">Inicio</a>
+                    <a href="#como-funciona" class="hover:text-blue-400 transition">Cómo Funciona</a>
+                    <a href="#proyectos" class="hover:text-blue-400 transition">Proyectos</a>
+                    <a href="#trazabilidad" class="hover:text-blue-400 transition">Trazabilidad</a>
+                </div>
+                
+                <!-- Botón conectar wallet -->
+                <button id="connectWallet" class="btn-primary bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold">
+                    <i class="fas fa-wallet mr-2"></i>Conectar Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="pt-32 pb-20 px-6">
+        <div class="container mx-auto text-center fade-in">
+            <!-- Badge -->
+            <div class="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-500/30 rounded-full px-4 py-2 mb-8">
+                <i class="fas fa-shield-alt text-blue-400"></i>
+                <span class="text-sm">Transparencia verificable por blockchain</span>
+            </div>
+            
+            <!-- Título principal -->
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                No te pedimos que
+                <span class="gradient-animate bg-clip-text text-transparent">confíes</span>,
+                <br>te pedimos que lo
+                <span class="text-blue-400">compruebes</span>
+            </h1>
+            
+            <!-- Subtítulo -->
+            <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+                El <strong class="text-white">97%</strong> de tu donación va directamente al proyecto. 
+                El <strong class="text-white">3%</strong> a costes de plataforma. 
+                <br class="hidden md:block">
+                Programado e inmutable. Sin excepciones.
+            </p>
+            
+            <!-- CTAs -->
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <button class="btn-primary bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 rounded-lg text-lg font-bold flex items-center">
+                    <i class="fas fa-hand-holding-heart mr-3"></i>
+                    Donar Ahora
+                </button>
+                <button class="border border-white/30 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/10 transition">
+                    <i class="fas fa-search mr-3"></i>
+                    Ver Trazabilidad
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 max-w-4xl mx-auto">
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-blue-400 mb-2">97%</div>
+                    <div class="text-gray-300">Va al proyecto</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-purple-400 mb-2">100%</div>
+                    <div class="text-gray-300">Transparencia</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-pink-400 mb-2">0%</div>
+                    <div class="text-gray-300">Opacidad</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="py-20 px-6 bg-black/20">
+        <div class="container mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                Tu donación,
+                <span class="text-blue-400">paso a paso</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <!-- Paso 1 -->
+                <div class="text-center fade-in">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Donas</h3>
+                    <p class="text-gray-400">Eliges proyecto y cantidad en cripto o fiat</p>
+                </div>
+                
+                <!-- Paso 2 -->
+                <div class="text-center fade-in" style="animation-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Smart Contract</h3>
+                    <p class="text-gray-400">Divide automáticamente: 97% proyecto, 3% plataforma</p>
+                </div>
+                
+                <!-- Paso 3 -->
+                <div class="text-center fade-in" style="animation-delay: 0.4s;">
+                    <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Trazabilidad</h3>
+                    <p class="text-gray-400">Recibes un "recibo de seguimiento" único</p>
+                </div>
+                
+                <!-- Paso 4 -->
+                <div class="text-center fade-in" style="animation-delay: 0.6s;">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                        4
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Compruebas</h3>
+                    <p class="text-gray-400">Verificas en blockchain cada movimiento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black/40 border-t border-white/10 py-12 px-6 mt-20">
+        <div class="container mx-auto text-center">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <span class="text-xl font-bold">97</span>
+                </div>
+                <span class="text-xl font-bold">Fundación 97</span>
+            </div>
+            <p class="text-gray-400 mb-4">Transparencia radical en donaciones</p>
+            <div class="flex justify-center space-x-6 text-gray-400">
+                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-github text-xl"></i></a>
+                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-linkedin text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Detectar scroll para animaciones
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Conectar wallet (placeholder)
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert('Wallet conectada: ' + accounts[0].substring(0, 6) + '...' + accounts[0].substring(38));
+                } catch (error) {
+                    console.error('Error conectando wallet:', error);
+                }
+            } else {
+                alert('Por favor instala MetaMask para conectar tu wallet');
+            }
+        });
+    </script>
+
+</body>
+</html>
