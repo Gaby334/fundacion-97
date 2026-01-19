@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Fundación 97</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .timeline-line {
+            position: absolute;
+            left: 31px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        
+        .timeline-dot {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hash-text {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+
+    <!-- NAV -->
+    <nav class="bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <a href="../index.html" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold">97</span>
+                        </div>
+                        <span class="text-xl font-bold">Fundación 97</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div id="walletInfo" class="hidden bg-green-500/20 border border-green-500/30 px-4 py-2 rounded-lg">
+                        <i class="fas fa-wallet mr-2"></i>
+                        <span id="walletAddress" class="font-mono text-sm"></span>
+                    </div>
+                    <button id="connectWallet" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold transition">
+                        <i class="fas fa-wallet mr-2"></i>Conectar Wallet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container mx-auto px-6 py-12">
+        
+        <!-- HEADER -->
+        <div class="mb-12 fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Panel de <span class="text-blue-400">Trazabilidad</span>
+            </h1>
+            <p class="text-gray-400 text-lg">Sigue el viaje de tu donación en tiempo real</p>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="mb-8 fade-in">
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
+                <label class="block text-sm font-semibold mb-3">Buscar donación por ID o Hash de transacción</label>
+                <div class="flex gap-3">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Ej: 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb8 o DON-2024-001"
+                        class="flex-1 bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                    >
+                    <button onclick="searchDonation()" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-semibold transition">
+                        <i class="fas fa-search mr-2"></i>Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRID LAYOUT -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- LEFT COLUMN - DONATION SUMMARY -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Card resumen -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
+                    <h2 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-file-invoice-dollar text-blue-400 mr-3"></i>
+                        Resumen de Donación
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">ID de Donación</div>
+                            <div class="font-bold text-lg">DON-2024-001</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Monto Total</div>
+                            <div class="font-bold text-3xl text-blue-400">500 €</div>
+                            <div class="text-sm text-gray-400">≈ 0.15 ETH</div>
+                        </div>
+                        
+                        <div class="border-t border-white/10 pt-4">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Al proyecto</span>
+                                <span class="font-bold text-green-400">485 € (97%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Plataforma</span>
+                                <span class="font-bold">15 € (3%)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-white/10 pt-4">
+                            <div class="text-sm text-gray-400 mb-1">Proyecto</div>
+                            <div class="font-semibold">Agua Potable - Guatemala</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Fecha</div>
+                            <div class="font-semibold">15 Enero 2026, 14:23</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Estado</div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse"></div>
+                                <span class="text-green-400 font-semibold">Fondos Recibidos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card blockchain -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-cube text-purple-400 mr-3"></i>
+                        Verificación Blockchain
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Transaction Hash</div>
+                            <div class="hash-text break-all">0x742d35...595f0bEb8</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Smart Contract</div>
+                            <div class="hash-text break-all">0x8ba1f1...9e8c3d2a</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Red</div>
+                            <div class="font-semibold">Polygon (Mumbai Testnet)</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Block Number</div>
+                            <div class="font-semibold">#42,567,891</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Confirmaciones</div>
+                            <div class="font-semibold text-green-400">128 confirmaciones</div>
+                        </div>
+                        
+                        <button class="w-full bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/30 px-4 py-2 rounded-lg text-sm font-semibold transition mt-4">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            Ver en Polygonscan
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN - TIMELINE -->
+            <div class="lg:col-span-2">
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 fade-in">
+                    <h2 class="text-2xl font-bold mb-8 flex items-center">
+                        <i class="fas fa-route text-blue-400 mr-3"></i>
+                        Viaje de tu Donación
+                    </h2>
+
+                    <!-- Timeline -->
+                    <div class="relative pl-16">
+                        <div class="timeline-line"></div>
+
+                        <!-- Step 1 - Completed -->
+                        <div class="mb-12 relative fade-in">
+                            <div class="absolute -left-16 timeline-dot">
+                                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50">
+                                    <i class="fas fa-check text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-5">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-bold">Donación Recibida</h3>
+                                    <span class="text-sm text-gray-400">15 Ene, 14:23</span>
+                                </div>
+                                <p class="text-gray-400 mb-3">Tu donación de 500 € ha sido confirmada en blockchain</p>
+                                <div class="bg-black/30 rounded-lg p-3 text-sm">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-400">Hash:</span>
+                                        <span class="hash-text">0x742d35...5f0bEb8</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Gas Fee:</span>
+                                        <span class="font-semibold">0.0012 ETH</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 - Completed -->
+                        <div class="mb-12 relative fade-in" style="animation-delay: 0.2s;">
+                            <div class="absolute -left-16 timeline-dot">
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50">
+                                    <i class="fas fa-code-branch text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-bold">Smart Contract Ejecutado</h3>
+                                    <span class="text-sm text-gray-400">15 Ene, 14:23</span>
+                                </div>
+                                <p class="text-gray-400 mb-3">División automática de fondos según contrato programado</p>
+                                <div class="space-y-2">
+                                    <div class="bg-black/30 rounded-lg p-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-400">→ Al proyecto</span>
+                                            <span class="text-green-400 font-bold">485 € (97%)</span>
+                                        </div>
+                                    </div>
+                                    <div class="bg-black/30 rounded-lg p-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-400">→ Costes plataforma</span>
+                                            <span class="font-bold">15 € (3%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 - Completed -->
+                        <div class="mb-12 relative fade-in" style="animation-delay: 0.4s;">
+                            <div class="absolute -left-16 timeline-dot">
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
+                                    <i class="fas fa-exchange-alt text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-5">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-bold">Transferido a ONG</h3>
+                                    <span class="text-sm text-gray-400">15 Ene, 14:25</span>
+                                </div>
+                                <p class="text-gray-400 mb-3">Fondos enviados a la wallet de la organización verificada</p>
+                                <div class="bg-black/30 rounded-lg p-3 text-sm">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-400">Destinatario:</span>
+                                        <span class="hash-text">0x9c4f...a2b8</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">ONG:</span>
+                                        <span class="font-semibold">Water For Life Guatemala</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 - In Progress -->
+                        <div class="mb-12 relative fade-in" style="animation-delay: 0.6s;">
+                            <div class="absolute -left-16 timeline-dot">
+                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/50 pulse">
+                                    <i class="fas fa-tools text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-5">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-bold">Proyecto en Ejecución</h3>
+                                    <span class="text-sm bg-yellow-500/20 px-3 py-1 rounded-full">En progreso</span>
+                                </div>
+                                <p class="text-gray-400 mb-3">Tu donación está siendo utilizada para instalar sistema de filtración</p>
+                                <div class="bg-black/30 rounded-lg p-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span class="text-gray-400">Progreso del proyecto</span>
+                                        <span class="font-bold">67%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full" style="width: 67%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 - Pending -->
+                        <div class="relative fade-in" style="animation-delay: 0.8s;">
+                            <div class="absolute -left-16 timeline-dot">
+                                <div class="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center border-2 border-gray-500">
+                                    <i class="fas fa-heart text-2xl text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="bg-gray-500/10 border border-gray-500/30 rounded-lg p-5 opacity-60">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-bold">Impacto Verificado</h3>
+                                    <span class="text-sm bg-gray-500/20 px-3 py-1 rounded-full">Pendiente</span>
+                                </div>
+                                <p class="text-gray-400">Recibirás informe con fotos y datos del beneficiario cuando se complete</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Impact metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in">
+                        <i class="fas fa-users text-4xl text-blue-400 mb-3"></i>
+                        <div class="text-3xl font-bold mb-1">247</div>
+                        <div class="text-sm text-gray-400">Personas beneficiadas</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.1s;">
+                        <i class="fas fa-tint text-4xl text-cyan-400 mb-3"></i>
+                        <div class="text-3xl font-bold mb-1">15,000L</div>
+                        <div class="text-sm text-gray-400">Litros de agua/día</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.2s;">
+                        <i class="fas fa-leaf text-4xl text-green-400 mb-3"></i>
+                        <div class="text-3xl font-bold mb-1">-2.1</div>
+                        <div class="text-sm text-gray-400">Toneladas CO₂/año</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Wallet connection
+        let web3;
+        let userAccount;
+
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAccount = accounts[0];
+                    
+                    document.getElementById('walletAddress').textContent = 
+                        userAccount.substring(0, 6) + '...' + userAccount.substring(38);
+                    document.getElementById('walletInfo').classList.remove('hidden');
+                    document.getElementById('connectWallet').innerHTML = 
+                        '<i class="fas fa-check-circle mr-2"></i>Conectada';
+                    
+                    web3 = new Web3(window.ethereum);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error conectando wallet');
+                }
+            } else {
+                alert('Por favor instala MetaMask para usar esta función');
+                window.open('https://metamask.io/download/', '_blank');
+            }
+        });
+
+        // Search function
+        function searchDonation() {
+            const searchValue = document.getElementById('searchInput').value;
+            if (searchValue.trim() === '') {
+                alert('Por favor ingresa un ID o hash de transacción');
+                return;
+            }
+            
+            // Simulación de búsqueda
+            console.log('Buscando:', searchValue);
+            alert('Función de búsqueda en desarrollo. ID buscado: ' + searchValue);
+        }
+
+        // Enter key support
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchDonation();
+            }
+        });
+    </script>
+
+</body>
+</html>

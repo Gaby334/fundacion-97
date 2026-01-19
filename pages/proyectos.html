@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos - Fundación 97</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+
+    <!-- NAV -->
+    <nav class="bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="../index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">97</span>
+                    </div>
+                    <span class="text-xl font-bold">Fundación 97</span>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="../index.html" class="hover:text-blue-400 transition">Inicio</a>
+                    <a href="proyectos.html" class="text-blue-400">Proyectos</a>
+                    <a href="dashboard.html" class="hover:text-blue-400 transition">Trazabilidad</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="pt-24 pb-12 px-6">
+        <div class="container mx-auto text-center fade-in">
+            <h1 class="text-5xl md:text-6xl font-black mb-6">
+                Proyectos <span class="text-blue-400">Activos</span>
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                Cada proyecto está verificado, trazado en blockchain y con impacto medible
+            </p>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterProjects('all')" class="filter-btn active bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition">
+                    Todos
+                </button>
+                <button onclick="filterProjects('agua')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
+                    <i class="fas fa-tint mr-2"></i>Agua
+                </button>
+                <button onclick="filterProjects('educacion')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
+                    <i class="fas fa-book mr-2"></i>Educación
+                </button>
+                <button onclick="filterProjects('salud')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
+                    <i class="fas fa-heartbeat mr-2"></i>Salud
+                </button>
+                <button onclick="filterProjects('medioambiente')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
+                    <i class="fas fa-leaf mr-2"></i>Medio Ambiente
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS GRID -->
+    <section class="pb-20 px-6">
+        <div class="container mx-auto">
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Los proyectos se cargarán aquí -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const projects = [
+            {
+                id: 1,
+                title: "Agua Potable - Guatemala",
+                category: "agua",
+                description: "Sistema de filtración para 5 comunidades rurales. Acceso a agua limpia para 250 familias.",
+                image: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=800",
+                raised: 45000,
+                goal: 60000,
+                donors: 187,
+                location: "Guatemala, América Central",
+                urgency: "Alta",
+                impact: "250 familias",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x8ba1f1...9e8c3d2a"
+            },
+            {
+                id: 2,
+                title: "Escuela Digital - Kenia",
+                category: "educacion",
+                description: "Equipamiento tecnológico para escuela rural. 15 ordenadores, internet y formación docente.",
+                image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
+                raised: 28000,
+                goal: 35000,
+                donors: 142,
+                location: "Nairobi, Kenia",
+                urgency: "Media",
+                impact: "450 estudiantes",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x7fc2a3...4b9d1e5f"
+            },
+            {
+                id: 3,
+                title: "Clínica Móvil - Perú",
+                category: "salud",
+                description: "Unidad médica equipada para comunidades amazónicas sin acceso a salud.",
+                image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800",
+                raised: 67000,
+                goal: 80000,
+                donors: 234,
+                location: "Amazonas, Perú",
+                urgency: "Crítica",
+                impact: "15 comunidades",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x9c4f2a...b8e3d7c1"
+            },
+            {
+                id: 4,
+                title: "Reforestación - Brasil",
+                category: "medioambiente",
+                description: "Plantación de 50,000 árboles nativos en zona deforestada del Amazonas.",
+                image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800",
+                raised: 92000,
+                goal: 100000,
+                donors: 512,
+                location: "Amazonas, Brasil",
+                urgency: "Alta",
+                impact: "50,000 árboles",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x3d8b5c...e2f9a4d6"
+            },
+            {
+                id: 5,
+                title: "Comedores Escolares - India",
+                category: "educacion",
+                description: "Alimentación diaria para 800 niños en situación de vulnerabilidad.",
+                image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
+                raised: 15000,
+                goal: 50000,
+                donors: 89,
+                location: "Mumbai, India",
+                urgency: "Crítica",
+                impact: "800 niños/día",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x6e7d4a...c1b8f3e9"
+            },
+            {
+                id: 6,
+                title: "Energía Solar - Uganda",
+                category: "medioambiente",
+                description: "Instalación de paneles solares en hospital rural. Electricidad 24/7.",
+                image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800",
+                raised: 38000,
+                goal: 45000,
+                donors: 176,
+                location: "Kampala, Uganda",
+                urgency: "Media",
+                impact: "1 hospital",
+                verified: true,
+                blockchain: "Polygon",
+                contract: "0x2a9c7f...d4e6b1a8"
+            }
+        ];
+
+        // Render projects
+        function renderProjects(filteredProjects) {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+
+            filteredProjects.forEach((project, index) => {
+                const percentage = Math.round((project.raised / project.goal) * 100);
+                const urgencyColor = {
+                    'Crítica': 'red',
+                    'Alta': 'orange',
+                    'Media': 'yellow'
+                };
+
+                const card = `
+                    <div class="project-card bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden fade-in" style="animation-delay: ${index * 0.1}s;">
+                        <!-- Image -->
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4 bg-${urgencyColor[project.urgency]}-500 px-3 py-1 rounded-full text-sm font-bold">
+                                ${project.urgency}
+                            </div>
+                            <div class="absolute top-4 right-4 bg-green-500 px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i> Verificado
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6">
+                            <!-- Category -->
+                            <div class="text-blue-400 text-sm font-semibold mb-2 uppercase">
+                                ${project.category}
+                            </div>
+
+                            <!-- Title -->
+                            <h3 class="text-xl font-bold mb-3">${project.title}</h3>
+
+                            <!-- Description -->
+                            <p class="text-gray-400 text-sm mb-4 line-clamp-2">${project.description}</p>
+
+                            <!-- Location -->
+                            <div class="flex items-center text-sm text-gray-400 mb-4">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                ${project.location}
+                            </div>
+
+                            <!-- Progress -->
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-400">Recaudado</span>
+                                    <span class="font-bold">${percentage}%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                                    <div class="progress-bar bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-bold text-blue-400">${project.raised.toLocaleString()} €</span>
+                                    <span class="text-gray-400">de ${project.goal.toLocaleString()} €</span>
+                                </div>
+                            </div>
+
+                            <!-- Stats -->
+                            <div class="grid grid-cols-2 gap-3 mb-4 pt-4 border-t border-white/10">
+                                <div>
+                                    <div class="text-gray-400 text-xs mb-1">Donantes</div>
+                                    <div class="font-bold">${project.donors}</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-400 text-xs mb-1">Impacto</div>
+                                    <div class="font-bold">${project.impact}</div>
+                                </div>
+                            </div>
+
+                            <!-- Blockchain info -->
+                            <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 mb-4 text-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-400">Blockchain:</span>
+                                    <span class="font-semibold">${project.blockchain}</span>
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span class="text-gray-400">Smart Contract:</span>
+                                    <span class="font-mono">${project.contract}</span>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex gap-3">
+                                <button onclick="donate(${project.id})" class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-4 py-3 rounded-lg font-bold transition">
+                                    Donar Ahora
+                                </button>
+                                <button onclick="viewDetails(${project.id})" class="bg-white/10 hover:bg-white/20 px-4 py-3 rounded-lg transition">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                grid.innerHTML += card;
+            });
+        }
+
+        // Filter projects
+        function filterProjects(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600');
+                btn.classList.add('bg-white/10');
+            });
+            event.target.classList.add('active', 'bg-blue-600');
+            event.target.classList.remove('bg-white/10');
+
+            // Filter and render
+            const filtered = category === 'all' 
+                ? projects 
+                : projects.filter(p => p.category === category);
+            
+            renderProjects(filtered);
+        }
+
+        // Donate function
+        function donate(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            alert(`Redirigiendo a página de donación para: ${project.title}\n\nEsta función se implementará con Web3 en el siguiente paso.`);
+            // Aquí integraremos el smart contract
+        }
+
+        // View details
+        function viewDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            alert(`Detalles completos de: ${project.title}\n\n${project.description}\n\nEsta será una página dedicada con más información, fotos, actualizaciones, etc.`);
+        }
+
+        // Initial render
+        renderProjects(projects);
+    </script>
+
+</body>
+</html>
