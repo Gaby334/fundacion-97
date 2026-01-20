@@ -1,28 +1,21 @@
-# Fundación 97 - Transparencia Radical en Donaciones
+# Fundación 97 - Plataforma de Donaciones Blockchain
 
-Plataforma de donaciones con trazabilidad blockchain.
+Aplicación web de donaciones con trazabilidad 100% verificable en blockchain.
 
 ## Características
-
 - ✅ 97% del dinero va al proyecto
-- ✅ 3% a costes de plataforma
-- ✅ Trazabilidad 100% verificable
-- ✅ Smart contracts inmutables
+- ✅ 3% a costes de plataforma  
+- ✅ Trazabilidad inmutable
+- ✅ Smart contracts en Polygon
+
+## Empezar
+1. Abre `index.html` en tu navegador
+2. Ve a la documentación: [../docs/README.md](../docs/README.md)
 
 ## Tecnologías
-
-- HTML5
-- Tailwind CSS
+- HTML5 + Tailwind CSS
 - JavaScript (Web3.js)
 - Ethereum/Polygon blockchain
-
-## Instalación
-```bash
-# Clonar repositorio
-git clone https://github.com/Gaby334/fundacion-97.git
-
-# Abrir index.html en navegador
-```
 
 ## Autor
 
