@@ -1,0 +1,184 @@
+/* 
+   Fundación 97 - Brandbook CSS
+   Paleta de Colores Global - Enero 2026
+   
+   Este archivo define la paleta de colores de marca en variables CSS
+   para fácil mantenimiento y consistencia.
+*/
+
+:root {
+  /* Colores Principales */
+  --color-deep-blue: #0D3B66;      /* Textos principales, títulos, líneas */
+  --color-trust-blue: #2E86AB;     /* Botones primarios, links, highlights */
+  --color-light-blue: #A3CEF1;     /* Fondos secundarios, hover suaves */
+  
+  /* Colores Acentos */
+  --color-warm-orange: #F28F3B;    /* Acentos clave (97%), botones CTA, progreso */
+  --color-soft-orange: #F8B27A;    /* Badges, estados positivos */
+  
+  /* Colores Neutros */
+  --color-warm-beige: #FAF0CA;     /* Fondo principal (calidez sutil) */
+  --color-off-white: #FFF8F0;      /* Cards, fondo alternativo */
+  --color-dark-gray: #1C2A38;      /* Texto secundario */
+  
+  /* Alias para Tailwind Compatibility */
+  --color-primary: #2E86AB;
+  --color-primary-dark: #0D3B66;
+  --color-secondary: #F8B27A;
+  --color-accent: #F28F3B;
+  --color-background-light: #FAF0CA;
+  --color-surface-light: #FFF8F0;
+}
+
+/* Clases de Utilidad (si necesitas sin Tailwind) */
+
+/* Textos */
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-primary-dark {
+  color: var(--color-primary-dark);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+/* Fondos */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-primary-dark {
+  background-color: var(--color-primary-dark);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-accent-soft {
+  background-color: var(--color-soft-orange);
+}
+
+.bg-background-light {
+  background-color: var(--color-warm-beige);
+}
+
+.bg-surface-light {
+  background-color: var(--color-off-white);
+}
+
+/* Bordes */
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.border-light-blue {
+  border-color: var(--color-light-blue);
+}
+
+/* Botones */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--color-accent);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  opacity: 0.9;
+}
+
+/* Gradientes */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-trust-blue) 0%, var(--color-warm-orange) 100%);
+}
+
+.gradient-conic-97 {
+  background: conic-gradient(var(--color-trust-blue) 0% 97%, var(--color-warm-orange) 97% 100%);
+}
+
+/* Sombras */
+.shadow-primary {
+  box-shadow: 0 0 50px -10px rgba(46, 134, 171, 0.5);
+}
+
+.shadow-accent {
+  box-shadow: 0 0 40px -10px rgba(242, 143, 59, 0.4);
+}
+
+/* Estados */
+.state-success {
+  background-color: var(--color-soft-orange);
+  color: white;
+}
+
+.state-verified {
+  background-color: var(--color-soft-orange);
+  color: white;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-primary {
+  background-color: var(--color-light-blue);
+  color: var(--color-primary-dark);
+}
+
+.badge-success {
+  background-color: var(--color-soft-orange);
+  color: white;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Separadores */
+hr {
+  border-color: var(--color-light-blue);
+  opacity: 0.3;
+}
+
+/* Dark Mode (opcional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background-light: #1C2A38;
+    --color-surface-light: #2E3B4A;
+  }
+}

@@ -92,7 +92,7 @@ class DonationsUI {
                                     <span class="font-bold" id="platformAmount">0 €</span>
                                 </div>
                                 <div class="w-full bg-gray-700 rounded-full h-2 mt-3">
-                                    <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 97%"></div>
+                                    <div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 97%"></div>
                                 </div>
                             </div>
                         </div>
