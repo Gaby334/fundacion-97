@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación 97 - Transparencia Radical en Donaciones</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    
+    <!-- Web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b7898",
+                        "primary-dark": "#135d76",
+                        "secondary": "#9FD49C",
+                        "accent": "#E3B24F",
+                        "background-light": "#f8f9fa",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #1b7898 0%, #9FD49C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .blob {
+            background: linear-gradient(135deg, rgba(27, 120, 152, 0.1) 0%, rgba(159, 212, 156, 0.1) 100%);
+            filter: blur(100px);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light font-display antialiased">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-surface-light/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-all">
+                        <span class="material-symbols-outlined text-2xl icon-filled">favorite</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-slate-900 tracking-tight">Fundación 97</span>
+                        <span class="text-xs font-medium text-slate-500">Transparency First</span>
+                    </div>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#como-funciona" class="text-sm font-medium text-slate-700 hover:text-primary transition-colors">
+                        Cómo Funciona
+                    </a>
+                    <a href="pages/proyectos.html" class="text-sm font-medium text-slate-700 hover:text-primary transition-colors">
+                        Proyectos
+                    </a>
+                    <a href="pages/dashboard.html" class="text-sm font-medium text-slate-700 hover:text-primary transition-colors">
+                        Dashboard
+                    </a>
+                    <a href="pages/tracker.html" class="text-sm font-medium text-slate-700 hover:text-primary transition-colors">
+                        Tracker
+                    </a>
+                </div>
+                
+                <!-- CTA Button -->
+                <button id="connectWalletNav" class="hidden md:flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/20 hover:shadow-primary/40">
+                    <span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+                    <span>Conectar Wallet</span>
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-slate-700">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-6 overflow-hidden">
+        <!-- Animated Background Blobs -->
+        <div class="absolute top-0 left-0 w-96 h-96 blob -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 blob translate-x-1/2 translate-y-1/2"></div>
+        
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center fade-in-up">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-8">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <span class="text-sm font-bold text-primary">Verificado en Blockchain</span>
+                </div>
+                
+                <!-- Main Title -->
+                <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight tracking-tight">
+                    No te pedimos que
+                    <span class="gradient-text">confíes</span>,<br>
+                    te pedimos que lo
+                    <span class="text-primary">compruebes</span>
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="text-xl md:text-2xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    El <strong class="text-slate-900">97%</strong> de tu donación va directamente al proyecto. 
+                    El <strong class="text-slate-900">3%</strong> a costes de plataforma. 
+                    <br class="hidden md:block">
+                    <span class="text-primary font-bold">Programado e inmutable.</span> Sin excepciones.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                    <a href="pages/proyectos.html" class="group flex items-center gap-3 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all hover:-translate-y-1">
+                        <span class="material-symbols-outlined text-2xl icon-filled">volunteer_activism</span>
+                        <span>Explorar Proyectos</span>
+                        <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </a>
+                    <a href="pages/tracker.html" class="flex items-center gap-3 bg-white hover:bg-slate-50 text-slate-900 px-8 py-4 rounded-xl font-bold text-lg shadow-xl border border-slate-200 transition-all hover:-translate-y-1">
+                        <span class="material-symbols-outlined text-2xl">search</span>
+                        <span>Ver Trazabilidad</span>
+                    </a>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div class="bg-surface-light border border-slate-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <div class="text-5xl font-black gradient-text mb-2">97%</div>
+                        <div class="text-slate-600 font-medium">Va al Proyecto</div>
+                    </div>
+                    <div class="bg-surface-light border border-slate-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <div class="text-5xl font-black text-secondary mb-2">100%</div>
+                        <div class="text-slate-600 font-medium">Transparencia</div>
+                    </div>
+                    <div class="bg-surface-light border border-slate-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <div class="text-5xl font-black text-accent mb-2">0%</div>
+                        <div class="text-slate-600 font-medium">Opacidad</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="como-funciona" class="py-20 px-6 bg-slate-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                    Tu donación, <span class="text-primary">paso a paso</span>
+                </h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                    Cada transacción está verificada en blockchain y trazable en tiempo real
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-surface-light rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-all fade-in-up">
+                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-primary/30">
+                        <span class="material-symbols-outlined text-3xl icon-filled">volunteer_activism</span>
+                    </div>
+                    <div class="text-primary font-bold text-sm uppercase tracking-wider mb-2">Paso 1</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Donas</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Eliges proyecto y cantidad en cripto o fiat
+                    </p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-surface-light rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-all fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-secondary/30">
+                        <span class="material-symbols-outlined text-3xl icon-filled">lock_clock</span>
+                    </div>
+                    <div class="text-secondary font-bold text-sm uppercase tracking-wider mb-2">Paso 2</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Smart Contract</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Divide automáticamente: 97% proyecto, 3% plataforma
+                    </p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="bg-surface-light rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-all fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-accent/30">
+                        <span class="material-symbols-outlined text-3xl icon-filled">receipt_long</span>
+                    </div>
+                    <div class="text-accent font-bold text-sm uppercase tracking-wider mb-2">Paso 3</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Trazabilidad</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Recibes un "recibo de seguimiento" único
+                    </p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="bg-surface-light rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-all fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="w-16 h-16 bg-primary-dark rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-primary-dark/30">
+                        <span class="material-symbols-outlined text-3xl icon-filled">verified</span>
+                    </div>
+                    <div class="text-primary-dark font-bold text-sm uppercase tracking-wider mb-2">Paso 4</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Compruebas</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Verificas en blockchain cada movimiento
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transparency Section -->
+    <section class="py-20 px-6 bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        ¿Dónde va tu dinero? <span class="gradient-text">Exactamente aquí</span>
+                    </h2>
+                    <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+                        Creemos en la transparencia radical. Nuestros smart contracts enrutan automáticamente 
+                        el 97% de cada transacción directamente a la wallet del proyecto.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-3 h-3 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                            <div>
+                                <div class="font-bold text-lg mb-1">97% Ejecución del Proyecto</div>
+                                <p class="text-slate-400 text-sm">Fondos directos a beneficiarios y proveedores verificados</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-3 h-3 rounded-full bg-accent mt-2 flex-shrink-0"></div>
+                            <div>
+                                <div class="font-bold text-lg mb-1">3% Plataforma y Gas</div>
+                                <p class="text-slate-400 text-sm">Costes de servidor, auditorías de seguridad y gas fees</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex gap-4">
+                        <a href="pages/dashboard.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark px-6 py-3 rounded-lg font-bold transition-all">
+                            <span>Ver Dashboard</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative fade-in-up" style="animation-delay: 0.2s;">
+                    <!-- Visual Chart -->
+                    <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700">
+                        <div class="flex items-end justify-center gap-4 h-64">
+                            <div class="relative group flex-1">
+                                <div class="absolute -top-12 left-1/2 -translate-x-1/2 text-center">
+                                    <div class="text-4xl font-black text-primary mb-1">97%</div>
+                                    <div class="text-xs text-slate-400">Al Proyecto</div>
+                                </div>
+                                <div class="w-full bg-primary rounded-t-2xl h-full flex items-end justify-center pb-4 group-hover:shadow-2xl group-hover:shadow-primary/50 transition-all">
+                                    <span class="material-symbols-outlined text-6xl text-white/20 icon-filled">favorite</span>
+                                </div>
+                            </div>
+                            <div class="relative group w-16">
+                                <div class="absolute -top-12 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
+                                    <div class="text-2xl font-black text-accent mb-1">3%</div>
+                                    <div class="text-xs text-slate-400">Costes</div>
+                                </div>
+                                <div class="w-full bg-accent rounded-t-2xl h-8 flex items-end justify-center pb-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6 bg-primary">
+        <div class="max-w-4xl mx-auto text-center text-white fade-in-up">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Empieza a donar con transparencia total
+            </h2>
+            <p class="text-xl mb-10 text-primary-100">
+                Únete a cientos de donantes que ya confían en blockchain
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="pages/proyectos.html" class="bg-white text-primary hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-2xl hover:-translate-y-1">
+                    Ver Proyectos Activos
+                </a>
+                <button id="connectWalletCTA" class="bg-primary-dark hover:bg-slate-900 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all border-2 border-white/20 hover:-translate-y-1">
+                    Conectar Mi Wallet
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined text-2xl icon-filled">favorite</span>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold text-lg">Fundación 97</div>
+                            <div class="text-xs text-slate-500">Transparency First</div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-500 max-w-sm">
+                        Plataforma de donaciones verificada por blockchain. 
+                        97% de transparencia garantizada.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">Enlaces</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="pages/proyectos.html" class="hover:text-white transition-colors">Proyectos</a></li>
+                        <li><a href="pages/dashboard.html" class="hover:text-white transition-colors">Dashboard</a></li>
+                        <li><a href="pages/tracker.html" class="hover:text-white transition-colors">Tracker</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacidad</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Términos</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Auditorías</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 text-center text-sm">
+                <p>© 2024 Fundación 97. Blockchain Verified Philanthropy.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/blockchain.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        // Inicializar sistema
+        const tracker = new BlockchainTracker();
+        
+        // Conectar wallet desde diferentes botones
+        const connectButtons = ['connectWalletNav', 'connectWalletCTA'];
+        connectButtons.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                btn.addEventListener('click', async () => {
+                    try {
+                        await tracker.init();
+                        const wallet = await tracker.connectWallet();
+                        btn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> ${tracker.formatAddress(wallet.address)}`;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

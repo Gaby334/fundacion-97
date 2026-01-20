@@ -5,332 +5,343 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos - Fundación 97</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b7898",
+                        "primary-dark": "#135d76",
+                        "secondary": "#9FD49C",
+                        "accent": "#E3B24F",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        
-        .project-card {
-            transition: all 0.3s ease;
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .progress-bar {
-            transition: width 1s ease-out;
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
 
-    <!-- NAV -->
-    <nav class="bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="../index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span class="text-xl font-bold">97</span>
+<body class="bg-slate-50 font-display">
+    
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="../index.html" class="flex items-center gap-3">
+                    <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                        <span class="material-symbols-outlined text-2xl icon-filled">favorite</span>
                     </div>
-                    <span class="text-xl font-bold">Fundación 97</span>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900">Fundación 97</h1>
+                        <p class="text-xs text-slate-500">Transparency First</p>
+                    </div>
                 </a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="../index.html" class="hover:text-blue-400 transition">Inicio</a>
-                    <a href="proyectos.html" class="text-blue-400">Proyectos</a>
-                    <a href="dashboard.html" class="hover:text-blue-400 transition">Trazabilidad</a>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="../index.html" class="text-sm font-medium text-slate-700 hover:text-primary">Inicio</a>
+                    <a href="proyectos.html" class="text-sm font-medium text-primary">Proyectos</a>
+                    <a href="dashboard.html" class="text-sm font-medium text-slate-700 hover:text-primary">Dashboard</a>
+                    <a href="tracker.html" class="text-sm font-medium text-slate-700 hover:text-primary">Tracker</a>
                 </div>
+                
+                <button id="connectWallet" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="pt-24 pb-12 px-6">
-        <div class="container mx-auto text-center fade-in">
-            <h1 class="text-5xl md:text-6xl font-black mb-6">
-                Proyectos <span class="text-blue-400">Activos</span>
-            </h1>
-            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                Cada proyecto está verificado, trazado en blockchain y con impacto medible
+    <!-- Hero Section -->
+    <section class="py-16 px-6 bg-gradient-to-br from-primary to-primary-dark text-white">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl font-bold mb-4">Proyectos Activos</h1>
+            <p class="text-xl text-primary-100 max-w-2xl mx-auto mb-8">
+                Cada proyecto está verificado en blockchain y con impacto medible en tiempo real
             </p>
             
-            <!-- Filters -->
-            <div class="flex flex-wrap justify-center gap-3 mb-12">
-                <button onclick="filterProjects('all')" class="filter-btn active bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition">
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-4">
+                    <div class="text-3xl font-bold" id="totalProjects">-</div>
+                    <div class="text-sm text-primary-100">Proyectos</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-4">
+                    <div class="text-3xl font-bold" id="totalRaised">-</div>
+                    <div class="text-sm text-primary-100">Recaudado</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-4">
+                    <div class="text-3xl font-bold" id="totalDonors">-</div>
+                    <div class="text-sm text-primary-100">Donantes</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-4">
+                    <div class="text-3xl font-bold">97%</div>
+                    <div class="text-sm text-primary-100">Transparencia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="py-8 px-6 bg-white border-b border-slate-200 sticky top-[72px] z-40">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button onclick="filterProjects('all')" class="filter-btn bg-primary text-white px-6 py-2 rounded-full font-semibold transition-all">
                     Todos
                 </button>
-                <button onclick="filterProjects('agua')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
-                    <i class="fas fa-tint mr-2"></i>Agua
+                <button onclick="filterProjects('agua')" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 px-6 py-2 rounded-full font-semibold transition-all">
+                    <span class="material-symbols-outlined text-sm mr-1">water_drop</span>
+                    Agua
                 </button>
-                <button onclick="filterProjects('educacion')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
-                    <i class="fas fa-book mr-2"></i>Educación
+                <button onclick="filterProjects('educacion')" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 px-6 py-2 rounded-full font-semibold transition-all">
+                    <span class="material-symbols-outlined text-sm mr-1">school</span>
+                    Educación
                 </button>
-                <button onclick="filterProjects('salud')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
-                    <i class="fas fa-heartbeat mr-2"></i>Salud
+                <button onclick="filterProjects('salud')" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 px-6 py-2 rounded-full font-semibold transition-all">
+                    <span class="material-symbols-outlined text-sm mr-1">medical_services</span>
+                    Salud
                 </button>
-                <button onclick="filterProjects('medioambiente')" class="filter-btn bg-white/10 px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition">
-                    <i class="fas fa-leaf mr-2"></i>Medio Ambiente
+                <button onclick="filterProjects('medioambiente')" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 px-6 py-2 rounded-full font-semibold transition-all">
+                    <span class="material-symbols-outlined text-sm mr-1">eco</span>
+                    Medio Ambiente
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- PROJECTS GRID -->
-    <section class="pb-20 px-6">
-        <div class="container mx-auto">
+    <!-- Projects Grid -->
+    <section class="py-12 px-6">
+        <div class="max-w-7xl mx-auto">
             <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Los proyectos se cargarán aquí -->
+                <!-- Los proyectos se cargarán aquí dinámicamente -->
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-16">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
+                <p class="text-slate-500 font-semibold">Cargando proyectos...</p>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">search_off</span>
+                <p class="text-slate-500 text-lg font-semibold">No se encontraron proyectos</p>
             </div>
         </div>
     </section>
 
+    <!-- Scripts -->
+    <script src="../js/blockchain.js"></script>
+    <script src="../js/ui.js"></script>
+    
     <script>
-        const projects = [
-            {
-                id: 1,
-                title: "Agua Potable - Guatemala",
-                category: "agua",
-                description: "Sistema de filtración para 5 comunidades rurales. Acceso a agua limpia para 250 familias.",
-                image: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=800",
-                raised: 45000,
-                goal: 60000,
-                donors: 187,
-                location: "Guatemala, América Central",
-                urgency: "Alta",
-                impact: "250 familias",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x8ba1f1...9e8c3d2a"
-            },
-            {
-                id: 2,
-                title: "Escuela Digital - Kenia",
-                category: "educacion",
-                description: "Equipamiento tecnológico para escuela rural. 15 ordenadores, internet y formación docente.",
-                image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
-                raised: 28000,
-                goal: 35000,
-                donors: 142,
-                location: "Nairobi, Kenia",
-                urgency: "Media",
-                impact: "450 estudiantes",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x7fc2a3...4b9d1e5f"
-            },
-            {
-                id: 3,
-                title: "Clínica Móvil - Perú",
-                category: "salud",
-                description: "Unidad médica equipada para comunidades amazónicas sin acceso a salud.",
-                image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800",
-                raised: 67000,
-                goal: 80000,
-                donors: 234,
-                location: "Amazonas, Perú",
-                urgency: "Crítica",
-                impact: "15 comunidades",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x9c4f2a...b8e3d7c1"
-            },
-            {
-                id: 4,
-                title: "Reforestación - Brasil",
-                category: "medioambiente",
-                description: "Plantación de 50,000 árboles nativos en zona deforestada del Amazonas.",
-                image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800",
-                raised: 92000,
-                goal: 100000,
-                donors: 512,
-                location: "Amazonas, Brasil",
-                urgency: "Alta",
-                impact: "50,000 árboles",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x3d8b5c...e2f9a4d6"
-            },
-            {
-                id: 5,
-                title: "Comedores Escolares - India",
-                category: "educacion",
-                description: "Alimentación diaria para 800 niños en situación de vulnerabilidad.",
-                image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
-                raised: 15000,
-                goal: 50000,
-                donors: 89,
-                location: "Mumbai, India",
-                urgency: "Crítica",
-                impact: "800 niños/día",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x6e7d4a...c1b8f3e9"
-            },
-            {
-                id: 6,
-                title: "Energía Solar - Uganda",
-                category: "medioambiente",
-                description: "Instalación de paneles solares en hospital rural. Electricidad 24/7.",
-                image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800",
-                raised: 38000,
-                goal: 45000,
-                donors: 176,
-                location: "Kampala, Uganda",
-                urgency: "Media",
-                impact: "1 hospital",
-                verified: true,
-                blockchain: "Polygon",
-                contract: "0x2a9c7f...d4e6b1a8"
+        let projectsData = [];
+        let currentFilter = 'all';
+        
+        // Cargar proyectos desde JSON
+        async function loadProjects() {
+            try {
+                const response = await fetch('../data/proyectos.json');
+                const data = await response.json();
+                projectsData = data.projects;
+                
+                // Actualizar stats
+                document.getElementById('totalProjects').textContent = data.stats.totalProjects;
+                document.getElementById('totalRaised').textContent = formatCurrency(data.stats.totalRaised);
+                document.getElementById('totalDonors').textContent = data.stats.totalDonors.toLocaleString();
+                
+                // Renderizar proyectos
+                renderProjects(projectsData);
+                
+                document.getElementById('loadingState').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error cargando proyectos:', error);
+                document.getElementById('loadingState').innerHTML = `
+                    <span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+                    <p class="text-red-600 font-semibold">Error cargando proyectos</p>
+                `;
             }
-        ];
-
-        // Render projects
-        function renderProjects(filteredProjects) {
+        }
+        
+        // Renderizar proyectos
+        function renderProjects(projects) {
             const grid = document.getElementById('projectsGrid');
-            grid.innerHTML = '';
-
-            filteredProjects.forEach((project, index) => {
+            const emptyState = document.getElementById('emptyState');
+            
+            if (projects.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            
+            grid.innerHTML = projects.map((project, index) => {
                 const percentage = Math.round((project.raised / project.goal) * 100);
-                const urgencyColor = {
-                    'Crítica': 'red',
-                    'Alta': 'orange',
-                    'Media': 'yellow'
+                const urgencyColors = {
+                    'critica': 'bg-red-500',
+                    'alta': 'bg-orange-500',
+                    'media': 'bg-yellow-500'
                 };
-
-                const card = `
-                    <div class="project-card bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden fade-in" style="animation-delay: ${index * 0.1}s;">
+                
+                return `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 cursor-pointer group" onclick="viewProject(${project.id})">
                         <!-- Image -->
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
-                            <div class="absolute top-4 left-4 bg-${urgencyColor[project.urgency]}-500 px-3 py-1 rounded-full text-sm font-bold">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-4 left-4 ${urgencyColors[project.urgency]} text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
                                 ${project.urgency}
                             </div>
-                            <div class="absolute top-4 right-4 bg-green-500 px-3 py-1 rounded-full text-xs font-bold flex items-center">
-                                <i class="fas fa-check-circle mr-1"></i> Verificado
+                            <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm icon-filled">verified</span>
+                                Verificado
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                <div class="text-white text-sm font-semibold uppercase tracking-wider">${project.category}</div>
                             </div>
                         </div>
-
+                        
                         <!-- Content -->
                         <div class="p-6">
-                            <!-- Category -->
-                            <div class="text-blue-400 text-sm font-semibold mb-2 uppercase">
-                                ${project.category}
-                            </div>
-
-                            <!-- Title -->
-                            <h3 class="text-xl font-bold mb-3">${project.title}</h3>
-
-                            <!-- Description -->
-                            <p class="text-gray-400 text-sm mb-4 line-clamp-2">${project.description}</p>
-
+                            <h3 class="text-xl font-bold text-slate-900 mb-2 line-clamp-2">${project.title}</h3>
+                            <p class="text-slate-600 text-sm mb-4 line-clamp-2">${project.shortDescription}</p>
+                            
                             <!-- Location -->
-                            <div class="flex items-center text-sm text-gray-400 mb-4">
-                                <i class="fas fa-map-marker-alt mr-2"></i>
-                                ${project.location}
+                            <div class="flex items-center text-sm text-slate-500 mb-4">
+                                <span class="material-symbols-outlined text-lg mr-1">location_on</span>
+                                ${project.location.country}, ${project.location.region}
                             </div>
-
+                            
                             <!-- Progress -->
                             <div class="mb-4">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Recaudado</span>
-                                    <span class="font-bold">${percentage}%</span>
+                                <div class="flex justify-between text-sm font-semibold mb-2">
+                                    <span class="text-primary">${formatCurrency(project.raised)}</span>
+                                    <span class="text-slate-400">Meta: ${formatCurrency(project.goal)}</span>
                                 </div>
-                                <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
-                                    <div class="progress-bar bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: ${percentage}%"></div>
+                                <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
                                 </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="font-bold text-blue-400">${project.raised.toLocaleString()} €</span>
-                                    <span class="text-gray-400">de ${project.goal.toLocaleString()} €</span>
-                                </div>
-                            </div>
-
-                            <!-- Stats -->
-                            <div class="grid grid-cols-2 gap-3 mb-4 pt-4 border-t border-white/10">
-                                <div>
-                                    <div class="text-gray-400 text-xs mb-1">Donantes</div>
-                                    <div class="font-bold">${project.donors}</div>
-                                </div>
-                                <div>
-                                    <div class="text-gray-400 text-xs mb-1">Impacto</div>
-                                    <div class="font-bold">${project.impact}</div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs text-slate-500">${percentage}% completado</span>
+                                    <span class="text-xs font-bold text-primary">${project.donors} donantes</span>
                                 </div>
                             </div>
-
-                            <!-- Blockchain info -->
-                            <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 mb-4 text-xs">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-gray-400">Blockchain:</span>
-                                    <span class="font-semibold">${project.blockchain}</span>
+                            
+                            <!-- Impact -->
+                            <div class="bg-slate-50 rounded-lg p-3 mb-4">
+                                <div class="text-xs text-slate-500 mb-1">Impacto esperado</div>
+                                <div class="text-sm font-bold text-slate-900">${project.impact.description}</div>
+                            </div>
+                            
+                            <!-- Blockchain Info -->
+                            <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600">Blockchain:</span>
+                                    <span class="font-semibold text-slate-900">${project.blockchain.network}</span>
                                 </div>
-                                <div class="flex items-center justify-between mt-1">
-                                    <span class="text-gray-400">Smart Contract:</span>
-                                    <span class="font-mono">${project.contract}</span>
+                                <div class="flex items-center justify-between text-xs mt-1">
+                                    <span class="text-slate-600">Contrato:</span>
+                                    <code class="font-mono text-primary">${project.blockchain.contract.substring(0, 10)}...</code>
                                 </div>
                             </div>
-
+                            
                             <!-- Actions -->
                             <div class="flex gap-3">
-                                <button onclick="donate(${project.id})" class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-4 py-3 rounded-lg font-bold transition">
-                                    Donar Ahora
+                                <button onclick="event.stopPropagation(); donate(${project.id})" class="flex-1 bg-primary hover:bg-primary-dark text-white py-3 px-4 rounded-lg font-bold transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined icon-filled">volunteer_activism</span>
+                                    Donar
                                 </button>
-                                <button onclick="viewDetails(${project.id})" class="bg-white/10 hover:bg-white/20 px-4 py-3 rounded-lg transition">
-                                    <i class="fas fa-info-circle"></i>
+                                <button onclick="event.stopPropagation(); viewDetails(${project.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-4 rounded-lg transition-all">
+                                    <span class="material-symbols-outlined">info</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 `;
-
-                grid.innerHTML += card;
-            });
+            }).join('');
         }
-
-        // Filter projects
+        
+        // Filtrar proyectos
         function filterProjects(category) {
-            // Update active button
+            currentFilter = category;
+            
+            // Actualizar botones
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600');
-                btn.classList.add('bg-white/10');
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-slate-200', 'text-slate-700');
             });
-            event.target.classList.add('active', 'bg-blue-600');
-            event.target.classList.remove('bg-white/10');
-
-            // Filter and render
+            event.target.classList.add('bg-primary', 'text-white');
+            event.target.classList.remove('bg-slate-200', 'text-slate-700');
+            
+            // Filtrar
             const filtered = category === 'all' 
-                ? projects 
-                : projects.filter(p => p.category === category);
+                ? projectsData 
+                : projectsData.filter(p => p.category === category);
             
             renderProjects(filtered);
         }
-
-        // Donate function
+        
+        // Ver proyecto completo
+        function viewProject(projectId) {
+            window.location.href = `proyecto-detalle.html?id=${projectId}`;
+        }
+        
+        // Donar
         function donate(projectId) {
-            const project = projects.find(p => p.id === projectId);
-            alert(`Redirigiendo a página de donación para: ${project.title}\n\nEsta función se implementará con Web3 en el siguiente paso.`);
-            // Aquí integraremos el smart contract
+            const project = projectsData.find(p => p.id === projectId);
+            uiManager.showNotification(`Abriendo modal de donación para: ${project.title}`, 'info');
+            // Aquí se abrirá el modal de donación
         }
-
-        // View details
+        
+        // Ver detalles
         function viewDetails(projectId) {
-            const project = projects.find(p => p.id === projectId);
-            alert(`Detalles completos de: ${project.title}\n\n${project.description}\n\nEsta será una página dedicada con más información, fotos, actualizaciones, etc.`);
+            viewProject(projectId);
         }
-
-        // Initial render
-        renderProjects(projects);
+        
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-ES', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Conectar wallet
+        const tracker = new BlockchainTracker();
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            try {
+                await tracker.init();
+                const wallet = await tracker.connectWallet();
+                document.getElementById('connectWallet').innerHTML = `
+                    <span class="material-symbols-outlined icon-filled">check_circle</span>
+                `;
+                uiManager.showNotification('Wallet conectada correctamente', 'success');
+            } catch (error) {
+                uiManager.showNotification('Error conectando wallet', 'error');
+            }
+        });
+        
+        // Cargar proyectos al iniciar
+        loadProjects();
     </script>
-
 </body>
 </html>

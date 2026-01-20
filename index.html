@@ -3,251 +3,690 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fundación 97 - Donaciones con transparencia radical verificada por blockchain. 97% va directo al proyecto.">
     <title>Fundación 97 - Transparencia Radical en Donaciones</title>
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconnect a fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Web3.js para blockchain -->
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    
+    <!-- Web3.js -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
     
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Configuración de Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1b7898",
+                        "primary-dark": "#125a73",
+                        secondary: "#14b8a6",
+                        accent: "#E3B24F",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        mono: ["ui-monospace", "SFMono-Regular", "monospace"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'ticker': 'ticker 30s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        ticker: {
+                            '0%': { transform: 'translate3d(0, 0, 0)' },
+                            '100%': { transform: 'translate3d(-100%, 0, 0)' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
     
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        /* Glass morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
-        /* Animación suave para elementos */
-        .fade-in {
-            animation: fadeIn 0.6s ease-in;
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Text gradient */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        /* Efecto gradiente animado */
-        .gradient-animate {
-            background: linear-gradient(270deg, #3b82f6, #8b5cf6, #ec4899);
-            background-size: 600% 600%;
-            animation: gradientShift 8s ease infinite;
+        /* Ticker infinito */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-right: 100%;
+            box-sizing: content-box;
+            animation: ticker 30s linear infinite;
         }
         
-        /* Botón con efecto hover */
-        .btn-primary {
-            transition: all 0.3s ease;
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        /* Card con glassmorphism */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-body antialiased transition-colors duration-300">
 
     <!-- NAVEGACIÓN -->
-    <nav class="fixed top-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-50 glass shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span class="text-xl font-bold">97</span>
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="bg-primary text-white p-1.5 rounded-lg group-hover:scale-110 transition-transform">
+                        <span class="material-icons-round text-xl">favorite</span>
                     </div>
-                    <span class="text-xl font-bold">Fundación 97</span>
+                    <span class="font-display font-bold text-xl text-slate-900 dark:text-white">Fundación 97</span>
+                </a>
+                
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#como-funciona" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Cómo Funciona</a>
+                    <a href="pages/proyectos.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Proyectos</a>
+                    <a href="pages/dashboard.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Dashboard</a>
+                    <a href="pages/tracker.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Tracker</a>
                 </div>
                 
-                <!-- Menú -->
-                <div class="hidden md:flex space-x-8">
-                    <a href="#inicio" class="hover:text-blue-400 transition">Inicio</a>
-                    <a href="#como-funciona" class="hover:text-blue-400 transition">Cómo Funciona</a>
-                    <a href="#proyectos" class="hover:text-blue-400 transition">Proyectos</a>
-                    <a href="#trazabilidad" class="hover:text-blue-400 transition">Trazabilidad</a>
+                <!-- Acciones -->
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <span class="material-icons-round">dark_mode</span>
+                    </button>
+                    <button id="connectWalletBtn" class="hidden md:flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <span class="material-icons-round text-sm">account_balance_wallet</span>
+                        <span id="walletBtnText">Conectar Wallet</span>
+                    </button>
                 </div>
-                
-                <!-- Botón conectar wallet -->
-                <button id="connectWallet" class="btn-primary bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold">
-                    <i class="fas fa-wallet mr-2"></i>Conectar Wallet
-                </button>
             </div>
         </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <section id="inicio" class="pt-32 pb-20 px-6">
-        <div class="container mx-auto text-center fade-in">
+    <div class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <!-- Background animado -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden pointer-events-none">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 dark:bg-primary/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-float"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-400/20 dark:bg-teal-400/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-float" style="animation-delay: 2s"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <!-- Badge -->
-            <div class="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-500/30 rounded-full px-4 py-2 mb-8">
-                <i class="fas fa-shield-alt text-blue-400"></i>
-                <span class="text-sm">Transparencia verificable por blockchain</span>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 text-primary dark:text-teal-300 text-xs font-semibold uppercase tracking-wide mb-8">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Verificado en Blockchain
             </div>
             
             <!-- Título principal -->
-            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
-                No te pedimos que
-                <span class="gradient-animate bg-clip-text text-transparent">confíes</span>,
-                <br>te pedimos que lo
-                <span class="text-blue-400">compruebes</span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 leading-tight">
+                No te pedimos que <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">confíes</span>,<br class="hidden md:block"/>
+                te pedimos que lo <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">compruebes</span>.
             </h1>
             
             <!-- Subtítulo -->
-            <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
-                El <strong class="text-white">97%</strong> de tu donación va directamente al proyecto. 
-                El <strong class="text-white">3%</strong> a costes de plataforma. 
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 dark:text-slate-300">
+                El <strong class="text-slate-900 dark:text-white">97%</strong> de tu donación va directamente al proyecto. 
+                El <strong class="text-slate-900 dark:text-white">3%</strong> a costes de plataforma.
                 <br class="hidden md:block">
                 Programado e inmutable. Sin excepciones.
             </p>
             
             <!-- CTAs -->
-            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <button class="btn-primary bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 rounded-lg text-lg font-bold flex items-center">
-                    <i class="fas fa-hand-holding-heart mr-3"></i>
-                    Donar Ahora
-                </button>
-                <button class="border border-white/30 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/10 transition">
-                    <i class="fas fa-search mr-3"></i>
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="pages/proyectos.html" class="flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-1 transition-all">
+                    Explorar Proyectos
+                    <span class="material-icons-round text-sm">arrow_forward</span>
+                </a>
+                <a href="pages/tracker.html" class="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-8 py-3.5 rounded-full font-semibold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                    <span class="material-icons-round text-sm">search</span>
                     Ver Trazabilidad
-                </button>
+                </a>
             </div>
             
-            <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 max-w-4xl mx-auto">
-                <div class="glass-card p-6 rounded-xl">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">97%</div>
-                    <div class="text-gray-300">Va al proyecto</div>
+            <!-- Stats Cards -->
+            <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-teal-400 mb-2">97%</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Va al Proyecto</div>
                 </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <div class="text-4xl font-bold text-purple-400 mb-2">100%</div>
-                    <div class="text-gray-300">Transparencia</div>
+                <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-emerald-500 to-green-400 mb-2">100%</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Transparencia</div>
                 </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <div class="text-4xl font-bold text-pink-400 mb-2">0%</div>
-                    <div class="text-gray-300">Opacidad</div>
+                <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-400 to-slate-600 mb-2">0%</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Opacidad</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE TICKER DE TRANSACCIONES -->
+    <div class="w-full bg-slate-900 dark:bg-black border-y border-slate-800 py-3 overflow-hidden">
+        <div class="ticker-wrap">
+            <div id="liveTicker" class="ticker text-slate-400 text-sm font-mono flex items-center">
+                <!-- Se llenará dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="py-24 bg-white dark:bg-slate-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-4">
+                    Tu donación, <span class="text-primary">paso a paso</span>
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                    Cada transacción está verificada en la cadena de bloques y es trazable en tiempo real.
+                </p>
+            </div>
+            
+            <!-- Timeline -->
+            <div class="relative">
+                <!-- Línea horizontal (desktop) -->
+                <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800">
+                    <div class="absolute top-0 left-0 h-full bg-primary/30 w-3/4"></div>
+                </div>
+                
+                <!-- Línea vertical (mobile) -->
+                <div class="md:hidden absolute left-8 top-0 h-full w-0.5 bg-slate-100 dark:bg-slate-800"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                    <!-- Paso 1 -->
+                    <div class="relative group">
+                        <div class="flex items-center mb-4 md:justify-center">
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-primary">volunteer_activism</span>
+                            </div>
+                        </div>
+                        <div class="pl-24 md:pl-0 md:text-center">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">1. Donas</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Eliges proyecto y cantidad en cripto o fiat. Sin intermediarios bancarios tradicionales.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 2 -->
+                    <div class="relative group">
+                        <div class="flex items-center mb-4 md:justify-center">
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-emerald-500">lock_clock</span>
+                            </div>
+                        </div>
+                        <div class="pl-24 md:pl-0 md:text-center">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors">2. Smart Contract</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">El contrato divide automáticamente: 97% al proyecto, 3% a la plataforma.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 3 -->
+                    <div class="relative group">
+                        <div class="flex items-center mb-4 md:justify-center">
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-amber-500">receipt_long</span>
+                            </div>
+                        </div>
+                        <div class="pl-24 md:pl-0 md:text-center">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors">3. Trazabilidad</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Recibes un "recibo de seguimiento" único hash en la blockchain.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 4 -->
+                    <div class="relative group">
+                        <div class="flex items-center mb-4 md:justify-center">
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-blue-500">verified_user</span>
+                            </div>
+                        </div>
+                        <div class="pl-24 md:pl-0 md:text-center">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-500 transition-colors">4. Compruebas</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Verificas en el explorador de bloques cada movimiento del fondo.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CÓMO FUNCIONA -->
-    <section id="como-funciona" class="py-20 px-6 bg-black/20">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
-                Tu donación,
-                <span class="text-blue-400">paso a paso</span>
-            </h2>
+    <!-- PROYECTOS DESTACADOS -->
+    <section class="py-24 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-2">
+                        Proyectos <span class="text-primary">Activos</span>
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Todos verificados en blockchain. Transparencia total.
+                    </p>
+                </div>
+                <a href="pages/proyectos.html" class="hidden md:flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors">
+                    Ver todos
+                    <span class="material-icons-round text-sm">arrow_forward</span>
+                </a>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                <!-- Paso 1 -->
-                <div class="text-center fade-in">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                        1
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Donas</h3>
-                    <p class="text-gray-400">Eliges proyecto y cantidad en cripto o fiat</p>
+            <div id="featuredProjects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Se llenará dinámicamente con JavaScript -->
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="pages/proyectos.html" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:-translate-y-1 transition-all">
+                    Ver Todos los Proyectos
+                    <span class="material-icons-round text-sm">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DISTRIBUCIÓN DE FONDOS (DARK SECTION) -->
+    <section class="py-24 bg-background-dark dark:bg-black relative overflow-hidden">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Contenido izquierda -->
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">
+                        ¿Dónde va tu dinero? <br/>
+                        <span class="text-emerald-400">Exactamente aquí.</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                        Creemos en la transparencia radical. Nuestros smart contracts enrutan automáticamente los fondos. No tocamos el dinero del proyecto.
+                    </p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary mt-1"></div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-white">97% Ejecución del Proyecto</h4>
+                                <p class="text-slate-400 text-sm">Fondos directos a beneficiarios y proveedores verificados. Transferencia inmediata.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 mt-1"></div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-white">3% Plataforma y Gas</h4>
+                                <p class="text-slate-400 text-sm">Costes de servidor (1.2%), auditorías de seguridad (1.0%) y tasas de red/gas fees (0.8%).</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <a href="pages/dashboard.html" class="mt-10 inline-flex items-center gap-2 text-white border-b border-primary pb-1 hover:text-primary transition-colors">
+                        Ver Dashboard Financiero
+                        <span class="material-icons-round text-sm">arrow_forward</span>
+                    </a>
                 </div>
                 
-                <!-- Paso 2 -->
-                <div class="text-center fade-in" style="animation-delay: 0.2s;">
-                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                        2
+                <!-- Donut Chart derecha -->
+                <div class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700 backdrop-blur-sm shadow-2xl">
+                    <div class="text-center mb-8">
+                        <span class="text-slate-400 text-sm font-mono">DISTRIBUCIÓN DE FONDOS (SMART CONTRACT V1.2)</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Smart Contract</h3>
-                    <p class="text-gray-400">Divide automáticamente: 97% proyecto, 3% plataforma</p>
-                </div>
-                
-                <!-- Paso 3 -->
-                <div class="text-center fade-in" style="animation-delay: 0.4s;">
-                    <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                        3
+                    
+                    <div class="relative h-64 flex items-center justify-center">
+                        <div class="w-64 h-64 rounded-full relative" style="background: conic-gradient(#1b7898 0% 97%, #f59e0b 97% 100%); box-shadow: 0 0 50px -10px rgba(27, 120, 152, 0.5);">
+                            <div class="absolute inset-4 bg-slate-800/90 rounded-full flex flex-col items-center justify-center z-10">
+                                <span class="text-5xl font-bold text-white">97%</span>
+                                <span class="text-xs text-slate-400 uppercase tracking-widest mt-1">Al Proyecto</span>
+                            </div>
+                            <div class="absolute -right-12 bottom-10 bg-slate-900 border border-amber-500/30 px-3 py-1 rounded-lg shadow-lg">
+                                <span class="text-amber-500 font-bold">3%</span> Costes
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Trazabilidad</h3>
-                    <p class="text-gray-400">Recibes un "recibo de seguimiento" único</p>
-                </div>
-                
-                <!-- Paso 4 -->
-                <div class="text-center fade-in" style="animation-delay: 0.6s;">
-                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                        4
+                    
+                    <div class="mt-8 grid grid-cols-2 gap-4 border-t border-slate-700 pt-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white" id="totalDonated">$247K</div>
+                            <div class="text-xs text-slate-500 uppercase">Total Donado</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white" id="totalDonors">1,164</div>
+                            <div class="text-xs text-slate-500 uppercase">Donantes</div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Compruebas</h3>
-                    <p class="text-gray-400">Verificas en blockchain cada movimiento</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="py-20 bg-primary relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">
+                Empieza a donar con transparencia total
+            </h2>
+            <p class="text-teal-100 text-lg mb-10 max-w-2xl mx-auto">
+                Únete a más de 1,000 donantes que ya confían en la tecnología blockchain para cambiar el mundo.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="pages/proyectos.html" class="bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all">
+                    Ver Proyectos Activos
+                </a>
+                <button id="connectWalletCTA" class="bg-teal-800/50 backdrop-blur-sm border border-teal-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-800 hover:scale-105 transition-all">
+                    Conectar Mi Wallet
+                </button>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-black/40 border-t border-white/10 py-12 px-6 mt-20">
-        <div class="container mx-auto text-center">
-            <div class="flex items-center justify-center space-x-3 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span class="text-xl font-bold">97</span>
+    <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-icons-round text-primary text-2xl">favorite</span>
+                        <span class="font-display font-bold text-xl text-white">Fundación 97</span>
+                    </div>
+                    <p class="text-sm max-w-xs leading-relaxed mb-4">
+                        Plataforma de donaciones verificada por blockchain. 97% de transparencia garantizada por código, no por promesas.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <span class="text-xl font-bold">Fundación 97</span>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Enlaces</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="pages/proyectos.html" class="hover:text-primary transition-colors">Proyectos</a></li>
+                        <li><a href="pages/dashboard.html" class="hover:text-primary transition-colors">Dashboard</a></li>
+                        <li><a href="pages/tracker.html" class="hover:text-primary transition-colors">Tracker</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Smart Contract</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">Privacidad</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Términos</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Auditorías</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Documentación</a></li>
+                    </ul>
+                </div>
             </div>
-            <p class="text-gray-400 mb-4">Transparencia radical en donaciones</p>
-            <div class="flex justify-center space-x-6 text-gray-400">
-                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-twitter text-xl"></i></a>
-                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-github text-xl"></i></a>
-                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-linkedin text-xl"></i></a>
+            
+            <div class="mt-12 pt-8 border-t border-slate-800 text-center text-xs">
+                © 2024 Fundación 97. Blockchain Verified Philanthropy.
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
+    <!-- SCRIPTS -->
+    <script src="js/blockchain.js"></script>
+    <script src="js/donations.js"></script>
     <script>
-        // Detectar scroll para animaciones
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+        // ========================================
+        // INICIALIZACIÓN
+        // ========================================
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
+        let blockchainTracker;
+        let donationsUI;
         
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Iniciando Fundación 97...');
+            
+            // Inicializar clases
+            blockchainTracker = new BlockchainTracker();
+            donationsUI = new DonationsUI(blockchainTracker);
+            
+            // Inicializar Web3
+            await blockchainTracker.init();
+            
+            // Inicializar UI de donaciones
+            donationsUI.init();
+            
+            // Cargar proyectos destacados
+            loadFeaturedProjects();
+            
+            // Inicializar live ticker
+            initializeLiveTicker();
+            
+            // Inicializar dark mode
+            initializeDarkMode();
+            
+            // Event listeners
+            setupEventListeners();
+            
+            console.log('✅ Fundación 97 lista!');
         });
         
-        // Conectar wallet (placeholder)
-        document.getElementById('connectWallet').addEventListener('click', async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    alert('Wallet conectada: ' + accounts[0].substring(0, 6) + '...' + accounts[0].substring(38));
-                } catch (error) {
-                    console.error('Error conectando wallet:', error);
+        // ========================================
+        // WALLET CONNECTION
+        // ========================================
+        
+        async function connectWallet() {
+            try {
+                const walletInfo = await blockchainTracker.connectWallet();
+                
+                // Actualizar UI
+                const btnText = document.getElementById('walletBtnText');
+                if (btnText) {
+                    btnText.textContent = blockchainTracker.formatAddress(walletInfo.address);
                 }
-            } else {
-                alert('Por favor instala MetaMask para conectar tu wallet');
+                
+                donationsUI.showNotification('Wallet conectada exitosamente', 'success');
+                
+            } catch (error) {
+                donationsUI.showNotification('Error conectando wallet', 'error');
+                console.error(error);
             }
-        });
+        }
+        
+        // ========================================
+        // PROYECTOS DESTACADOS
+        // ========================================
+        
+        async function loadFeaturedProjects() {
+            try {
+                // En producción, esto vendría del JSON o API
+                const response = await fetch('data/proyectos.json');
+                const data = await response.json();
+                
+                // Tomar los primeros 3 proyectos
+                const featured = data.projects.slice(0, 3);
+                
+                const container = document.getElementById('featuredProjects');
+                container.innerHTML = featured.map(project => createProjectCard(project)).join('');
+                
+                // Cargar stats globales
+                document.getElementById('totalDonated').textContent = `$${(data.stats.totalRaised / 1000).toFixed(0)}K`;
+                document.getElementById('totalDonors').textContent = data.stats.totalDonors.toLocaleString();
+                
+            } catch (error) {
+                console.error('Error cargando proyectos:', error);
+            }
+        }
+        
+        function createProjectCard(project) {
+            const percentage = Math.round((project.raised / project.goal) * 100);
+            
+            const urgencyColors = {
+                'critica': 'red',
+                'alta': 'orange',
+                'media': 'yellow'
+            };
+            
+            return `
+                <div class="glass rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1">
+                            <span class="material-icons-round text-sm">verified</span>
+                            Verificado
+                        </div>
+                        <div class="absolute top-4 left-4 bg-${urgencyColors[project.urgency]}-500 px-3 py-1 rounded-full text-xs font-bold text-white">
+                            ${project.urgency.toUpperCase()}
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="text-primary text-sm font-semibold mb-2 uppercase">${project.category}</div>
+                        <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">${project.title}</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">${project.shortDescription}</p>
+                        
+                        <div class="flex items-center text-sm text-slate-500 mb-4">
+                            <span class="material-icons-round text-sm mr-1">location_on</span>
+                            ${project.location.country}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-slate-600 dark:text-slate-400">Progreso</span>
+                                <span class="font-bold text-slate-900 dark:text-white">${percentage}%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-2">
+                                <div class="bg-gradient-to-r from-primary to-emerald-500 h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="font-bold text-primary">${project.raised.toLocaleString()} €</span>
+                                <span class="text-slate-500">de ${project.goal.toLocaleString()} €</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button onclick="donateToProject(${project.id})" class="flex-1 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-lg font-bold transition-colors">
+                                Donar Ahora
+                            </button>
+                            <a href="pages/proyectos.html" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-4 py-3 rounded-lg transition-colors flex items-center justify-center">
+                                <span class="material-icons-round text-slate-600 dark:text-slate-300">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function donateToProject(projectId) {
+            // Cargar proyecto completo
+            const response = await fetch('data/proyectos.json');
+            const data = await response.json();
+            const project = data.projects.find(p => p.id === projectId);
+            
+            if (project) {
+                donationsUI.openModal(project);
+            }
+        }
+        
+        // ========================================
+        // LIVE TICKER
+        // ========================================
+        
+        function initializeLiveTicker() {
+            const ticker = document.getElementById('liveTicker');
+            
+            const transactions = [
+                { hash: '0x8f...2a4c', amount: '250 USDC', project: 'Escuela Rural #4', block: '182934' },
+                { hash: '0x3d...9b1z', amount: '50 DAI', project: 'Comedor Social', block: '182935' },
+                { hash: '0x1a...7c8x', amount: '1200 USDT', project: 'Pozo de Agua', block: '182938' },
+                { hash: '0xe2...4f9y', amount: '100 USDC', project: 'Becas Universitarias', block: '182942' },
+                { hash: '0x5c...3k2w', amount: '75 MATIC', project: 'Clínica Móvil', block: '182945' },
+            ];
+            
+            ticker.innerHTML = transactions.map(tx => `
+                <div class="ticker-item flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    TX: ${tx.hash} • ${tx.amount} → ${tx.project} • Bloque #${tx.block}
+                </div>
+            `).join('');
+        }
+        
+        // ========================================
+        // DARK MODE
+        // ========================================
+        
+        function initializeDarkMode() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const html = document.documentElement;
+            
+            // Verificar preferencia guardada
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                html.classList.add('dark');
+            }
+            
+            darkModeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                localStorage.setItem('darkMode', html.classList.contains('dark'));
+            });
+        }
+        
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        
+        function setupEventListeners() {
+            // Conectar wallet - navbar
+            const connectBtn = document.getElementById('connectWalletBtn');
+            if (connectBtn) {
+                connectBtn.addEventListener('click', connectWallet);
+            }
+            
+            // Conectar wallet - CTA
+            const connectCTA = document.getElementById('connectWalletCTA');
+            if (connectCTA) {
+                connectCTA.addEventListener('click', connectWallet);
+            }
+        }
     </script>
-
 </body>
 </html>
