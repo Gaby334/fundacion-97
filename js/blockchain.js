@@ -66,7 +66,7 @@ class BlockchainTracker {
         ];
         
         // Dirección del contrato (actualizar cuando se despliegue)
-        this.contractAddress = '0x0000000000000000000000000000000000000000';
+        this.contractAddress = '0xB5Dca6eA553C7751eAaE60A58d2F7acD1C25f4E9';
     }
 
     /**

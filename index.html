@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fundación 97 - Donaciones con transparencia radical verificada por blockchain. 97% va directo al proyecto.">
-    <title>Fundación 97 - Transparencia Radical en Donaciones</title>
+    <meta name="description" content="Fundación 97 - Plataforma de donaciones con transparencia radical verificada por blockchain. 97% va directo al proyecto.">
+    <title>Fundación 97 - Transparencia Blockchain</title>
     
-    <!-- Preconnect a fuentes -->
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;700;800&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
@@ -20,26 +21,24 @@
     <!-- Web3.js -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
     
-    <!-- Configuración de Tailwind -->
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        primary: "#1b7898",
-                        "primary-dark": "#125a73",
-                        secondary: "#14b8a6",
-                        accent: "#E3B24F",
+                        "primary": "#1b7898",
+                        "primary-dark": "#135d76",
+                        "secondary": "#9FD49C",
+                        "accent": "#E3B24F",
                         "background-light": "#F8FAFC",
                         "background-dark": "#0F172A",
                         "surface-light": "#FFFFFF",
                         "surface-dark": "#1E293B",
                     },
                     fontFamily: {
-                        display: ["Outfit", "sans-serif"],
-                        body: ["Inter", "sans-serif"],
-                        mono: ["ui-monospace", "SFMono-Regular", "monospace"],
+                        "display": ["Outfit", "Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
                     },
                     borderRadius: {
                         DEFAULT: "0.5rem",
@@ -68,33 +67,23 @@
     </script>
     
     <style>
-        /* Glass morphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Material Icons */
+        .material-icons-round {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         
-        .dark .glass {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Text gradient */
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        /* Ticker infinito */
+        /* Ticker Animation */
         .ticker-wrap {
             width: 100%;
             overflow: hidden;
             box-sizing: border-box;
         }
-        
         .ticker {
             display: inline-block;
             white-space: nowrap;
@@ -102,13 +91,32 @@
             box-sizing: content-box;
             animation: ticker 30s linear infinite;
         }
-        
         .ticker-item {
             display: inline-block;
             padding: 0 2rem;
         }
         
-        /* Smooth scroll */
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Grid Pattern */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(to right, #80808012 1px, transparent 1px),
+                linear-gradient(to bottom, #80808012 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        /* Smooth Scroll */
         html {
             scroll-behavior: smooth;
         }
@@ -116,33 +124,42 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-body antialiased transition-colors duration-300">
-
-    <!-- NAVEGACIÓN -->
+    
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 glass shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
-                    <div class="bg-primary text-white p-1.5 rounded-lg group-hover:scale-110 transition-transform">
+                    <div class="bg-primary text-white p-1.5 rounded-lg group-hover:shadow-lg group-hover:shadow-primary/30 transition-all">
                         <span class="material-icons-round text-xl">favorite</span>
                     </div>
                     <span class="font-display font-bold text-xl text-slate-900 dark:text-white">Fundación 97</span>
                 </a>
                 
-                <!-- Menú Desktop -->
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#como-funciona" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Cómo Funciona</a>
-                    <a href="pages/proyectos.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Proyectos</a>
-                    <a href="pages/dashboard.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Dashboard</a>
-                    <a href="pages/tracker.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">Tracker</a>
+                    <a href="#como-funciona" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">
+                        Cómo Funciona
+                    </a>
+                    <a href="#proyectos" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">
+                        Proyectos
+                    </a>
+                    <a href="pages/dashboard.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">
+                        Dashboard
+                    </a>
+                    <a href="pages/tracker.html" class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white transition-colors">
+                        Tracker
+                    </a>
                 </div>
                 
-                <!-- Acciones -->
+                <!-- Actions -->
                 <div class="flex items-center space-x-4">
                     <button id="darkModeToggle" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        <span class="material-icons-round">dark_mode</span>
+                        <span class="material-icons-round dark:hidden">dark_mode</span>
+                        <span class="material-icons-round hidden dark:inline">light_mode</span>
                     </button>
-                    <button id="connectWalletBtn" class="hidden md:flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                    <button id="connectWalletNav" class="hidden md:flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                         <span class="material-icons-round text-sm">account_balance_wallet</span>
                         <span id="walletBtnText">Conectar Wallet</span>
                     </button>
@@ -151,38 +168,38 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- Hero Section -->
     <div class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <!-- Background animado -->
+        <!-- Animated Background -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden pointer-events-none">
             <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 dark:bg-primary/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-float"></div>
-            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-400/20 dark:bg-teal-400/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-float" style="animation-delay: 2s"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/20 dark:bg-secondary/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-float" style="animation-delay: 2s"></div>
         </div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 text-primary dark:text-teal-300 text-xs font-semibold uppercase tracking-wide mb-8">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 text-primary dark:text-primary text-xs font-semibold uppercase tracking-wide mb-8">
                 <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                 Verificado en Blockchain
             </div>
             
-            <!-- Título principal -->
+            <!-- Main Title -->
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 leading-tight">
-                No te pedimos que <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">confíes</span>,<br class="hidden md:block"/>
-                te pedimos que lo <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">compruebes</span>.
+                No te pedimos que 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">confíes</span>,<br class="hidden md:block"/>
+                te pedimos que lo 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">compruebes</span>.
             </h1>
             
-            <!-- Subtítulo -->
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 dark:text-slate-300">
+            <!-- Subtitle -->
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
                 El <strong class="text-slate-900 dark:text-white">97%</strong> de tu donación va directamente al proyecto. 
-                El <strong class="text-slate-900 dark:text-white">3%</strong> a costes de plataforma.
-                <br class="hidden md:block">
                 Programado e inmutable. Sin excepciones.
             </p>
             
-            <!-- CTAs -->
+            <!-- CTA Buttons -->
             <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="pages/proyectos.html" class="flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-1 transition-all">
+                <a href="#proyectos" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-1 transition-all">
                     Explorar Proyectos
                     <span class="material-icons-round text-sm">arrow_forward</span>
                 </a>
@@ -192,14 +209,14 @@
                 </a>
             </div>
             
-            <!-- Stats Cards -->
+            <!-- Stats Grid -->
             <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
-                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-teal-400 mb-2">97%</div>
+                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-secondary mb-2">97%</div>
                     <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Va al Proyecto</div>
                 </div>
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
-                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-emerald-500 to-green-400 mb-2">100%</div>
+                    <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-secondary to-green-400 mb-2">100%</div>
                     <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Transparencia</div>
                 </div>
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
@@ -210,16 +227,31 @@
         </div>
     </div>
 
-    <!-- LIVE TICKER DE TRANSACCIONES -->
+    <!-- Live Ticker -->
     <div class="w-full bg-slate-900 dark:bg-black border-y border-slate-800 py-3 overflow-hidden">
         <div class="ticker-wrap">
             <div id="liveTicker" class="ticker text-slate-400 text-sm font-mono flex items-center">
-                <!-- Se llenará dinámicamente con JavaScript -->
+                <div class="ticker-item flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    TX: 0x8f...2a4c • 250 USDC → Escuela Rural #4 • Bloque #182934
+                </div>
+                <div class="ticker-item flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    TX: 0x3d...9b1z • 50 DAI → Comedor Social • Bloque #182935
+                </div>
+                <div class="ticker-item flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    TX: 0x1a...7c8x • 1200 USDT → Pozo de Agua • Bloque #182938
+                </div>
+                <div class="ticker-item flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    TX: 0xe2...4f9y • 100 USDC → Becas Universitarias • Bloque #182942
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- CÓMO FUNCIONA -->
+    <!-- How It Works -->
     <section id="como-funciona" class="py-24 bg-white dark:bg-slate-900 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -233,16 +265,16 @@
             
             <!-- Timeline -->
             <div class="relative">
-                <!-- Línea horizontal (desktop) -->
+                <!-- Desktop Line -->
                 <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800">
                     <div class="absolute top-0 left-0 h-full bg-primary/30 w-3/4"></div>
                 </div>
                 
-                <!-- Línea vertical (mobile) -->
+                <!-- Mobile Line -->
                 <div class="md:hidden absolute left-8 top-0 h-full w-0.5 bg-slate-100 dark:bg-slate-800"></div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-                    <!-- Paso 1 -->
+                    <!-- Step 1 -->
                     <div class="relative group">
                         <div class="flex items-center mb-4 md:justify-center">
                             <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
@@ -251,46 +283,46 @@
                         </div>
                         <div class="pl-24 md:pl-0 md:text-center">
                             <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">1. Donas</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">Eliges proyecto y cantidad en cripto o fiat. Sin intermediarios bancarios tradicionales.</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Eliges proyecto y cantidad en cripto o fiat.</p>
                         </div>
                     </div>
                     
-                    <!-- Paso 2 -->
+                    <!-- Step 2 -->
                     <div class="relative group">
                         <div class="flex items-center mb-4 md:justify-center">
-                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
-                                <span class="material-icons-round text-3xl text-emerald-500">lock_clock</span>
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-secondary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-secondary">lock_clock</span>
                             </div>
                         </div>
                         <div class="pl-24 md:pl-0 md:text-center">
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors">2. Smart Contract</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">El contrato divide automáticamente: 97% al proyecto, 3% a la plataforma.</p>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-secondary transition-colors">2. Smart Contract</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Divide automáticamente: 97% proyecto, 3% plataforma.</p>
                         </div>
                     </div>
                     
-                    <!-- Paso 3 -->
+                    <!-- Step 3 -->
                     <div class="relative group">
                         <div class="flex items-center mb-4 md:justify-center">
-                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
-                                <span class="material-icons-round text-3xl text-amber-500">receipt_long</span>
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-accent/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                                <span class="material-icons-round text-3xl text-accent">receipt_long</span>
                             </div>
                         </div>
                         <div class="pl-24 md:pl-0 md:text-center">
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors">3. Trazabilidad</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">Recibes un "recibo de seguimiento" único hash en la blockchain.</p>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-accent transition-colors">3. Trazabilidad</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Recibes un "recibo de seguimiento" único.</p>
                         </div>
                     </div>
                     
-                    <!-- Paso 4 -->
+                    <!-- Step 4 -->
                     <div class="relative group">
                         <div class="flex items-center mb-4 md:justify-center">
-                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-primary/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
+                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-500/30 shadow-lg flex items-center justify-center z-10 transition-colors duration-300">
                                 <span class="material-icons-round text-3xl text-blue-500">verified_user</span>
                             </div>
                         </div>
                         <div class="pl-24 md:pl-0 md:text-center">
                             <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-500 transition-colors">4. Compruebas</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">Verificas en el explorador de bloques cada movimiento del fondo.</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Verificas en blockchain cada movimiento.</p>
                         </div>
                     </div>
                 </div>
@@ -298,8 +330,8 @@
         </div>
     </section>
 
-    <!-- PROYECTOS DESTACADOS -->
-    <section class="py-24 bg-background-light dark:bg-background-dark">
+    <!-- Proyectos Destacados -->
+    <section id="proyectos" class="py-24 bg-background-light dark:bg-background-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-12">
                 <div>
@@ -317,7 +349,11 @@
             </div>
             
             <div id="featuredProjects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Se llenará dinámicamente con JavaScript -->
+                <!-- Loading state -->
+                <div class="col-span-full text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
+                    <p class="text-slate-500">Cargando proyectos...</p>
+                </div>
             </div>
             
             <div class="text-center mt-12">
@@ -329,17 +365,17 @@
         </div>
     </section>
 
-    <!-- DISTRIBUCIÓN DE FONDOS (DARK SECTION) -->
+    <!-- Transparency Section -->
     <section class="py-24 bg-background-dark dark:bg-black relative overflow-hidden">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div class="absolute inset-0 grid-pattern"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Contenido izquierda -->
+                <!-- Left Content -->
                 <div>
                     <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">
                         ¿Dónde va tu dinero? <br/>
-                        <span class="text-emerald-400">Exactamente aquí.</span>
+                        <span class="text-secondary">Exactamente aquí.</span>
                     </h2>
                     <p class="text-slate-400 text-lg mb-8 leading-relaxed">
                         Creemos en la transparencia radical. Nuestros smart contracts enrutan automáticamente los fondos. No tocamos el dinero del proyecto.
@@ -350,14 +386,14 @@
                             <div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary mt-1"></div>
                             <div class="ml-4">
                                 <h4 class="text-lg font-bold text-white">97% Ejecución del Proyecto</h4>
-                                <p class="text-slate-400 text-sm">Fondos directos a beneficiarios y proveedores verificados. Transferencia inmediata.</p>
+                                <p class="text-slate-400 text-sm">Fondos directos a beneficiarios y proveedores verificados.</p>
                             </div>
                         </li>
                         <li class="flex items-start">
-                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 mt-1"></div>
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-accent mt-1"></div>
                             <div class="ml-4">
                                 <h4 class="text-lg font-bold text-white">3% Plataforma y Gas</h4>
-                                <p class="text-slate-400 text-sm">Costes de servidor (1.2%), auditorías de seguridad (1.0%) y tasas de red/gas fees (0.8%).</p>
+                                <p class="text-slate-400 text-sm">Costes de servidor (1.2%), auditorías (1.0%) y gas fees (0.8%).</p>
                             </div>
                         </li>
                     </ul>
@@ -368,20 +404,20 @@
                     </a>
                 </div>
                 
-                <!-- Donut Chart derecha -->
+                <!-- Right Chart -->
                 <div class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700 backdrop-blur-sm shadow-2xl">
                     <div class="text-center mb-8">
-                        <span class="text-slate-400 text-sm font-mono">DISTRIBUCIÓN DE FONDOS (SMART CONTRACT V1.2)</span>
+                        <span class="text-slate-400 text-sm font-mono">DISTRIBUCIÓN (SMART CONTRACT V1.2)</span>
                     </div>
                     
                     <div class="relative h-64 flex items-center justify-center">
-                        <div class="w-64 h-64 rounded-full relative" style="background: conic-gradient(#1b7898 0% 97%, #f59e0b 97% 100%); box-shadow: 0 0 50px -10px rgba(27, 120, 152, 0.5);">
+                        <div class="w-64 h-64 rounded-full relative" style="background: conic-gradient(#1b7898 0% 97%, #E3B24F 97% 100%); box-shadow: 0 0 50px -10px rgba(27, 120, 152, 0.5);">
                             <div class="absolute inset-4 bg-slate-800/90 rounded-full flex flex-col items-center justify-center z-10">
                                 <span class="text-5xl font-bold text-white">97%</span>
                                 <span class="text-xs text-slate-400 uppercase tracking-widest mt-1">Al Proyecto</span>
                             </div>
-                            <div class="absolute -right-12 bottom-10 bg-slate-900 border border-amber-500/30 px-3 py-1 rounded-lg shadow-lg">
-                                <span class="text-amber-500 font-bold">3%</span> Costes
+                            <div class="absolute -right-12 bottom-10 bg-slate-900 border border-accent/30 px-3 py-1 rounded-lg shadow-lg">
+                                <span class="text-accent font-bold">3%</span> Costes
                             </div>
                         </div>
                     </div>
@@ -401,28 +437,30 @@
         </div>
     </section>
 
-    <!-- CTA FINAL -->
+    <!-- CTA -->
     <section class="py-20 bg-primary relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+        
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
             <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">
                 Empieza a donar con transparencia total
             </h2>
             <p class="text-teal-100 text-lg mb-10 max-w-2xl mx-auto">
-                Únete a más de 1,000 donantes que ya confían en la tecnología blockchain para cambiar el mundo.
+                Únete a más de 1,000 donantes que ya confían en blockchain para cambiar el mundo.
             </p>
+            
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="pages/proyectos.html" class="bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all">
                     Ver Proyectos Activos
                 </a>
-                <button id="connectWalletCTA" class="bg-teal-800/50 backdrop-blur-sm border border-teal-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-800 hover:scale-105 transition-all">
+                <button id="connectWalletCTA" class="bg-primary-dark/50 backdrop-blur-sm border border-slate-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary-dark hover:scale-105 transition-all">
                     Conectar Mi Wallet
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -450,7 +488,7 @@
                         <li><a href="pages/proyectos.html" class="hover:text-primary transition-colors">Proyectos</a></li>
                         <li><a href="pages/dashboard.html" class="hover:text-primary transition-colors">Dashboard</a></li>
                         <li><a href="pages/tracker.html" class="hover:text-primary transition-colors">Tracker</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Smart Contract</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Documentación</a></li>
                     </ul>
                 </div>
                 
@@ -460,18 +498,18 @@
                         <li><a href="#" class="hover:text-primary transition-colors">Privacidad</a></li>
                         <li><a href="#" class="hover:text-primary transition-colors">Términos</a></li>
                         <li><a href="#" class="hover:text-primary transition-colors">Auditorías</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Documentación</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Smart Contract</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="mt-12 pt-8 border-t border-slate-800 text-center text-xs">
-                © 2024 Fundación 97. Blockchain Verified Philanthropy.
+                © 2025 Fundación 97. Blockchain Verified Philanthropy.
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
+    <!-- Scripts -->
     <script src="js/blockchain.js"></script>
     <script src="js/donations.js"></script>
     <script>
@@ -496,10 +534,7 @@
             donationsUI.init();
             
             // Cargar proyectos destacados
-            loadFeaturedProjects();
-            
-            // Inicializar live ticker
-            initializeLiveTicker();
+            await loadFeaturedProjects();
             
             // Inicializar dark mode
             initializeDarkMode();
@@ -538,7 +573,6 @@
         
         async function loadFeaturedProjects() {
             try {
-                // En producción, esto vendría del JSON o API
                 const response = await fetch('data/proyectos.json');
                 const data = await response.json();
                 
@@ -554,6 +588,13 @@
                 
             } catch (error) {
                 console.error('Error cargando proyectos:', error);
+                const container = document.getElementById('featuredProjects');
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-red-500">
+                        <span class="material-icons-round text-6xl mb-4">error_outline</span>
+                        <p>Error cargando proyectos. Por favor, recarga la página.</p>
+                    </div>
+                `;
             }
         }
         
@@ -574,8 +615,8 @@
                             <span class="material-icons-round text-sm">verified</span>
                             Verificado
                         </div>
-                        <div class="absolute top-4 left-4 bg-${urgencyColors[project.urgency]}-500 px-3 py-1 rounded-full text-xs font-bold text-white">
-                            ${project.urgency.toUpperCase()}
+                        <div class="absolute top-4 left-4 bg-${urgencyColors[project.urgency]}-500 px-3 py-1 rounded-full text-xs font-bold text-white uppercase">
+                            ${project.urgency}
                         </div>
                     </div>
                     
@@ -595,7 +636,7 @@
                                 <span class="font-bold text-slate-900 dark:text-white">${percentage}%</span>
                             </div>
                             <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-2">
-                                <div class="bg-gradient-to-r from-primary to-emerald-500 h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                                <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span class="font-bold text-primary">${project.raised.toLocaleString()} €</span>
@@ -617,37 +658,17 @@
         }
         
         async function donateToProject(projectId) {
-            // Cargar proyecto completo
-            const response = await fetch('data/proyectos.json');
-            const data = await response.json();
-            const project = data.projects.find(p => p.id === projectId);
-            
-            if (project) {
-                donationsUI.openModal(project);
+            try {
+                const response = await fetch('data/proyectos.json');
+                const data = await response.json();
+                const project = data.projects.find(p => p.id === projectId);
+                
+                if (project) {
+                    donationsUI.openModal(project);
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        }
-        
-        // ========================================
-        // LIVE TICKER
-        // ========================================
-        
-        function initializeLiveTicker() {
-            const ticker = document.getElementById('liveTicker');
-            
-            const transactions = [
-                { hash: '0x8f...2a4c', amount: '250 USDC', project: 'Escuela Rural #4', block: '182934' },
-                { hash: '0x3d...9b1z', amount: '50 DAI', project: 'Comedor Social', block: '182935' },
-                { hash: '0x1a...7c8x', amount: '1200 USDT', project: 'Pozo de Agua', block: '182938' },
-                { hash: '0xe2...4f9y', amount: '100 USDC', project: 'Becas Universitarias', block: '182942' },
-                { hash: '0x5c...3k2w', amount: '75 MATIC', project: 'Clínica Móvil', block: '182945' },
-            ];
-            
-            ticker.innerHTML = transactions.map(tx => `
-                <div class="ticker-item flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                    TX: ${tx.hash} • ${tx.amount} → ${tx.project} • Bloque #${tx.block}
-                </div>
-            `).join('');
         }
         
         // ========================================
@@ -676,7 +697,7 @@
         
         function setupEventListeners() {
             // Conectar wallet - navbar
-            const connectBtn = document.getElementById('connectWalletBtn');
+            const connectBtn = document.getElementById('connectWalletNav');
             if (connectBtn) {
                 connectBtn.addEventListener('click', connectWallet);
             }
