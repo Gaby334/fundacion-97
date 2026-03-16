@@ -12,6 +12,7 @@
     
     <script>
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
@@ -19,6 +20,8 @@
                         "primary-dark": "#0D3B66",
                         "secondary": "#F8B27A",
                         "accent": "#F28F3B",
+                        "background-light": "#FAF0CA",
+                        "surface-light": "#FFF8F0",
                         "deep-blue": "#0D3B66",
                         "trust-blue": "#2E86AB",
                         "light-blue": "#A3CEF1",
@@ -30,6 +33,7 @@
                     },
                     fontFamily: {
                         "display": ["Manrope", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
                     }
                 }
             }
@@ -43,40 +47,50 @@
         .icon-filled {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 20px;
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 font-display">
+<body class="bg-background-light text-slate-800 font-display min-h-screen flex overflow-hidden">
     
-    <!-- Navigation -->
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="../index.html" class="flex items-center gap-3">
-                    <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
-                        <span class="material-symbols-outlined text-2xl icon-filled">favorite</span>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-slate-900">Fundación 97</h1>
-                        <p class="text-xs text-slate-500">Transparency First</p>
-                    </div>
-                </a>
-                
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="../index.html" class="text-sm font-medium text-slate-700 hover:text-primary">Inicio</a>
-                    <a href="proyectos.html" class="text-sm font-medium text-primary">Proyectos</a>
-                    <a href="dashboard.html" class="text-sm font-medium text-slate-700 hover:text-primary">Dashboard</a>
-                    <a href="tracker.html" class="text-sm font-medium text-slate-700 hover:text-primary">Tracker</a>
+    <!-- Sidebar se inyectará aquí por NavigationManager -->
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-surface-light border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-10">
+            <div class="flex items-center gap-2 text-slate-500">
+                <span class="material-symbols-outlined text-xl">map</span>
+                <span class="text-slate-300">/</span>
+                <span class="text-sm font-medium text-slate-900">Proyectos</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div id="networkStatus" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full border border-slate-200">
+                    <div class="size-2 rounded-full bg-slate-400"></div>
+                    <span class="text-xs font-bold">No conectado</span>
                 </div>
                 
-                <button id="connectWallet" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/20">
-                    <span class="material-symbols-outlined text-xl">account_balance_wallet</span>
-                </button>
+                <div class="h-8 w-[1px] bg-slate-200 mx-1"></div>
+                
+                <div class="flex items-center gap-3">
+                    <button id="connectWallet" class="flex items-center gap-2 pl-3 pr-2 py-1.5 bg-primary hover:bg-primary-dark transition-colors rounded-lg text-white shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+                        <span class="text-sm font-bold">Conectar</span>
+                    </button>
+                </div>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <!-- Hero Section -->
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto custom-scroll">
     <section class="py-16 px-6 bg-gradient-to-br from-primary to-primary-dark text-white">
         <div class="max-w-7xl mx-auto text-center">
             <h1 class="text-5xl font-bold mb-4">Proyectos Activos</h1>
@@ -154,202 +168,70 @@
         </div>
     </section>
 
+        </div>
+    </main>
+
     <!-- Scripts -->
+    <script src="../js/navigation.js"></script>
     <script src="../js/blockchain.js"></script>
+    <script src="../js/donations.js"></script>
     <script src="../js/ui.js"></script>
+    <script src="../js/projects-loader.js"></script>
+    <script src="../js/tailwind-config.js"></script>
     
     <script>
-        let projectsData = [];
-        let currentFilter = 'all';
-        
-        // Cargar proyectos desde JSON
-        async function loadProjects() {
-            try {
-                const response = await fetch('../data/proyectos.json');
-                const data = await response.json();
-                projectsData = data.projects;
-                
-                // Actualizar stats
-                document.getElementById('totalProjects').textContent = data.stats.totalProjects;
-                document.getElementById('totalRaised').textContent = formatCurrency(data.stats.totalRaised);
-                document.getElementById('totalDonors').textContent = data.stats.totalDonors.toLocaleString();
-                
-                // Renderizar proyectos
-                renderProjects(projectsData);
-                
-                document.getElementById('loadingState').style.display = 'none';
-                
-            } catch (error) {
-                console.error('Error cargando proyectos:', error);
-                document.getElementById('loadingState').innerHTML = `
-                    <span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
-                    <p class="text-red-600 font-semibold">Error cargando proyectos</p>
-                `;
-            }
-        }
-        
-        // Renderizar proyectos
-        function renderProjects(projects) {
-            const grid = document.getElementById('projectsGrid');
-            const emptyState = document.getElementById('emptyState');
-            
-            if (projects.length === 0) {
-                grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            
-            grid.innerHTML = projects.map((project, index) => {
-                const percentage = Math.round((project.raised / project.goal) * 100);
-                const urgencyColors = {
-                    'critica': 'bg-red-500',
-                    'alta': 'bg-orange-500',
-                    'media': 'bg-yellow-500'
-                };
-                
-                return `
-                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 cursor-pointer group" onclick="viewProject(${project.id})">
-                        <!-- Image -->
-                        <div class="relative h-56 overflow-hidden">
-                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-4 left-4 ${urgencyColors[project.urgency]} text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                                ${project.urgency}
-                            </div>
-                            <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm icon-filled">verified</span>
-                                Verificado
-                            </div>
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                                <div class="text-white text-sm font-semibold uppercase tracking-wider">${project.category}</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Content -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 line-clamp-2">${project.title}</h3>
-                            <p class="text-slate-600 text-sm mb-4 line-clamp-2">${project.shortDescription}</p>
-                            
-                            <!-- Location -->
-                            <div class="flex items-center text-sm text-slate-500 mb-4">
-                                <span class="material-symbols-outlined text-lg mr-1">location_on</span>
-                                ${project.location.country}, ${project.location.region}
-                            </div>
-                            
-                            <!-- Progress -->
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm font-semibold mb-2">
-                                    <span class="text-primary">${formatCurrency(project.raised)}</span>
-                                    <span class="text-slate-400">Meta: ${formatCurrency(project.goal)}</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="text-xs text-slate-500">${percentage}% completado</span>
-                                    <span class="text-xs font-bold text-primary">${project.donors} donantes</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Impact -->
-                            <div class="bg-slate-50 rounded-lg p-3 mb-4">
-                                <div class="text-xs text-slate-500 mb-1">Impacto esperado</div>
-                                <div class="text-sm font-bold text-slate-900">${project.impact.description}</div>
-                            </div>
-                            
-                            <!-- Blockchain Info -->
-                            <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
-                                <div class="flex items-center justify-between text-xs">
-                                    <span class="text-slate-600">Blockchain:</span>
-                                    <span class="font-semibold text-slate-900">${project.blockchain.network}</span>
-                                </div>
-                                <div class="flex items-center justify-between text-xs mt-1">
-                                    <span class="text-slate-600">Contrato:</span>
-                                    <code class="font-mono text-primary">${project.blockchain.contract.substring(0, 10)}...</code>
-                                </div>
-                            </div>
-                            
-                            <!-- Actions -->
-                            <div class="flex gap-3">
-                                <button onclick="event.stopPropagation(); donate(${project.id})" class="flex-1 bg-primary hover:bg-primary-dark text-white py-3 px-4 rounded-lg font-bold transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined icon-filled">volunteer_activism</span>
-                                    Donar
-                                </button>
-                                <button onclick="event.stopPropagation(); viewDetails(${project.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-4 rounded-lg transition-all">
-                                    <span class="material-symbols-outlined">info</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Filtrar proyectos
-        function filterProjects(category) {
-            currentFilter = category;
-            
-            // Actualizar botones
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-primary', 'text-white');
-                btn.classList.add('bg-slate-200', 'text-slate-700');
+        // Cargar proyectos con todas las opciones (sin límite, con filtros)
+        document.addEventListener('DOMContentLoaded', () => {
+            ProjectsLoader.init({
+                limit: null,              // Sin límite - mostrar todos
+                featured: false,          // No solo destacados
+                containerSelector: '#projectsGrid',
+                showFilters: true,
+                showStats: true,
+                dataPath: '../data/proyectos.json'
             });
-            event.target.classList.add('bg-primary', 'text-white');
-            event.target.classList.remove('bg-slate-200', 'text-slate-700');
-            
-            // Filtrar
-            const filtered = category === 'all' 
-                ? projectsData 
-                : projectsData.filter(p => p.category === category);
-            
-            renderProjects(filtered);
-        }
-        
-        // Ver proyecto completo
-        function viewProject(projectId) {
-            window.location.href = `proyecto-detalle.html?id=${projectId}`;
-        }
-        
-        // Donar
-        function donate(projectId) {
-            const project = projectsData.find(p => p.id === projectId);
-            uiManager.showNotification(`Abriendo modal de donación para: ${project.title}`, 'info');
-            // Aquí se abrirá el modal de donación
-        }
-        
-        // Ver detalles
-        function viewDetails(projectId) {
-            viewProject(projectId);
-        }
-        
-        // Formatear moneda
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('es-ES', {
-                style: 'currency',
-                currency: 'EUR',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-        
-        // Conectar wallet
-        const tracker = new BlockchainTracker();
-        document.getElementById('connectWallet').addEventListener('click', async () => {
-            try {
-                await tracker.init();
-                const wallet = await tracker.connectWallet();
-                document.getElementById('connectWallet').innerHTML = `
-                    <span class="material-symbols-outlined icon-filled">check_circle</span>
-                `;
-                uiManager.showNotification('Wallet conectada correctamente', 'success');
-            } catch (error) {
-                uiManager.showNotification('Error conectando wallet', 'error');
-            }
+
+            // Configurar botones de filtro
+            setupFilterButtons();
         });
-        
-        // Cargar proyectos al iniciar
-        loadProjects();
+
+        // Configurar listeners en botones de filtro
+        function setupFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const category = btn.getAttribute('data-filter');
+                    
+                    // Actualizar estado visual
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('bg-slate-200', 'text-slate-700');
+                    });
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('bg-slate-200', 'text-slate-700');
+                    
+                    // Filtrar
+                    ProjectsLoader.filterProjects(category);
+                });
+            });
+        }
+
+        // Conectar wallet
+        const connectBtn = document.getElementById('connectWallet');
+        if (connectBtn) {
+            connectBtn.addEventListener('click', async () => {
+                try {
+                    const tracker = new BlockchainTracker();
+                    await tracker.init();
+                    const wallet = await tracker.connectWallet();
+                    connectBtn.innerHTML = `
+                        <span class="material-symbols-outlined text-lg icon-filled">check_circle</span>
+                        <span class="text-sm font-bold">${wallet.address.substring(0, 6)}...</span>
+                    `;
+                } catch (error) {
+                    console.error('Error conectando wallet:', error);
+                }
+            });
+        }
     </script>
 </body>
 </html>
