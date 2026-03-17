@@ -61,7 +61,7 @@
     
     <!-- Sidebar -->
     <aside class="w-64 bg-surface-light border-r border-slate-200 hidden md:flex flex-col z-20 h-screen sticky top-0">
-        <div class="p-6 flex items-center gap-3">
+        <a href="../index.html" class="p-6 flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
             <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
                 <span class="material-symbols-outlined text-2xl icon-filled">favorite</span>
             </div>
@@ -69,18 +69,18 @@
                 <h1 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">Fundación 97</h1>
                 <p class="text-slate-500 text-xs font-medium">Transparency First</p>
             </div>
-        </div>
+        </a>
         
         <nav class="flex-1 px-4 py-4 flex flex-col gap-2 overflow-y-auto">
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="dashboard.html">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" data-nav-link="dashboard" href="./dashboard.html">
                 <span class="material-symbols-outlined icon-filled">dashboard</span>
                 <span class="text-sm font-semibold">Overview</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors" href="tracker.html">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors" data-nav-link="tracker" href="./tracker.html">
                 <span class="material-symbols-outlined">volunteer_activism</span>
                 <span class="text-sm font-medium">My Donations</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors" href="proyectos.html">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors" data-nav-link="projects" href="./proyectos.html">
                 <span class="material-symbols-outlined">map</span>
                 <span class="text-sm font-medium">Projects</span>
             </a>
@@ -109,7 +109,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto relative">
         
         <!-- Top Header -->
         <header class="h-16 bg-surface-light border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-10">
@@ -263,11 +263,15 @@
     </main>
 
     <!-- Scripts -->
+    <script src="../js/navigation.js"></script>
     <script src="../js/blockchain.js"></script>
     <script src="../js/ui.js"></script>
     
     <script>
         // Estado global
+        const navigationManager = new NavigationManager();
+        navigationManager.init();
+        
         let tracker = new BlockchainTracker();
         let userDonations = [];
         let projects = [];

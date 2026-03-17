@@ -77,6 +77,9 @@ class NavigationManager {
     /**
      * Sincronizar links activos (mostrar página actual como activa)
      */
+    /**
+     * Sincronizar links activos (mostrar página actual como activa)
+     */
     syncActiveLinks() {
         const navLinks = document.querySelectorAll('[data-nav-link]');
         
@@ -84,13 +87,11 @@ class NavigationManager {
             const page = link.dataset.navLink;
             
             if (page === this.currentPage) {
-                // Página activa
-                link.classList.add('bg-primary/10', 'text-primary');
-                link.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                // Agregar clase active al link de la página actual
+                link.classList.add('active');
             } else {
-                // Páginas inactivas
-                link.classList.add('text-slate-600', 'hover:bg-slate-50');
-                link.classList.remove('bg-primary/10', 'text-primary');
+                // Remover clase active de otros links
+                link.classList.remove('active');
             }
         });
     }
