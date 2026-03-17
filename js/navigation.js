@@ -77,9 +77,6 @@ class NavigationManager {
     /**
      * Sincronizar links activos (mostrar página actual como activa)
      */
-    /**
-     * Sincronizar links activos (mostrar página actual como activa)
-     */
     syncActiveLinks() {
         const navLinks = document.querySelectorAll('[data-nav-link]');
         
