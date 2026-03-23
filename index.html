@@ -29,8 +29,10 @@
                     colors: {
                         "primary": "#2E86AB",
                         "primary-dark": "#0D3B66",
+                        "primary-light": "#4FA3D1",
                         "secondary": "#F8B27A",
                         "accent": "#F28F3B",
+                        "accent-light": "#FFAA4D",
                         "background-light": "#FAF0CA",
                         "background-dark": "#1C2A38",
                         "surface-light": "#FFF8F0",
@@ -43,6 +45,8 @@
                         "warm-beige": "#FAF0CA",
                         "off-white": "#FFF8F0",
                         "dark-gray": "#1C2A38",
+                        "text-dark": "#E2E8F0",
+                        "text-dark-secondary": "#94A3B8",
                     },
                     fontFamily: {
                         "display": ["Outfit", "Manrope", "sans-serif"],
@@ -149,6 +153,57 @@
         .dark .sidebar-nav [data-nav-link].active {
             @apply bg-primary/20 text-light-blue;
         }
+
+        /* Project Cards Enhanced Animation */
+        .group img {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover img {
+            filter: brightness(1.1);
+        }
+
+        /* Pulse Animation for Status Badges */
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Status badge pulse */
+        .group div[style*="animation"] {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Progress bar glow effect */
+        @keyframes progress-glow {
+            0%, 100% {
+                filter: brightness(1) drop-shadow(0 0 6px currentColor);
+            }
+            50% {
+                filter: brightness(1.1) drop-shadow(0 0 12px currentColor);
+            }
+        }
+
+        /* Card hover effects */
+        .glass {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Gradient text for status */
+        .project-status {
+            background: linear-gradient(135deg, #10B981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
 </head>
 
@@ -207,7 +262,7 @@
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 text-primary dark:text-primary text-xs font-semibold uppercase tracking-wide mb-8">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 text-primary dark:text-primary-light text-xs font-semibold uppercase tracking-wide mb-8">
                 <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                 Verificado en Blockchain
             </div>
@@ -242,15 +297,15 @@
             <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
                     <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-secondary mb-2">97%</div>
-                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Va al Proyecto</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Va al Proyecto</div>
                 </div>
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
                     <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-secondary to-green-400 mb-2">100%</div>
-                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Transparencia</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Transparencia</div>
                 </div>
                 <div class="glass p-8 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300">
                     <div class="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-400 to-slate-600 mb-2">0%</div>
-                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Opacidad</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Opacidad</div>
                 </div>
             </div>
         </div>
@@ -285,7 +340,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-4">
-                    Tu donación, <span class="text-primary">paso a paso</span>
+                    Tu donación, <span class="text-primary dark:text-primary-light">paso a paso</span>
                 </h2>
                 <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
                     Cada transacción está verificada en la cadena de bloques y es trazable en tiempo real.
@@ -404,7 +459,7 @@
                 <div>
                     <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">
                         ¿Dónde va tu dinero? <br/>
-                        <span class="text-secondary">Exactamente aquí.</span>
+                        <span class="text-secondary dark:text-accent-light">Exactamente aquí.</span>
                     </h2>
                     <p class="text-slate-400 text-lg mb-8 leading-relaxed">
                         Creemos en la transparencia radical. Nuestros smart contracts enrutan automáticamente los fondos. No tocamos el dinero del proyecto.
@@ -490,7 +545,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+    <footer class="bg-slate-900 text-slate-400 dark:text-slate-300 py-16 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
@@ -540,6 +595,7 @@
 
     <!-- Scripts -->
     <script src="js/navigation.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/blockchain.js"></script>
     <script src="js/donations.js"></script>
     <script>
@@ -551,32 +607,47 @@
         let donationsUI;
         
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 Iniciando Fundación 97...');
-            
-            // Inicializar NavigationManager PRIMERO
-            const navigationManager = new NavigationManager();
-            navigationManager.init();
-            
-            // Inicializar clases
-            blockchainTracker = new BlockchainTracker();
-            donationsUI = new DonationsUI(blockchainTracker);
-            
-            // Inicializar Web3
-            await blockchainTracker.init();
-            
-            // Inicializar UI de donaciones
-            donationsUI.init();
-            
-            // Cargar proyectos destacados
-            await loadFeaturedProjects();
-            
-            // Inicializar dark mode
-            initializeDarkMode();
-            
-            // Event listeners
-            setupEventListeners();
-            
-            console.log('✅ Fundación 97 lista!');
+            try {
+                console.log('🚀 Iniciando Fundación 97...');
+                
+                // Inicializar NavigationManager PRIMERO
+                const navigationManager = new NavigationManager();
+                navigationManager.init();
+                console.log('✅ NavigationManager inicializado');
+                
+                // Inicializar clases
+                blockchainTracker = new BlockchainTracker();
+                donationsUI = new DonationsUI(blockchainTracker);
+                console.log('✅ Classes (BlockchainTracker, DonationsUI) inicializadas');
+                
+                // Inicializar Web3
+                console.log('⏳ Inicializando Web3...');
+                await blockchainTracker.init();
+                console.log('✅ Web3 inicializado');
+                
+                // Inicializar UI de donaciones
+                donationsUI.init();
+                console.log('✅ DonationsUI inicializado');
+                
+                // Cargar proyectos destacados
+                console.log('⏳ Cargando proyectos destacados...');
+                await loadFeaturedProjects();
+                console.log('✅ Proyectos destacados cargados');
+                
+                // Inicializar dark mode
+                console.log('⏳ Inicializando dark mode...');
+                initializeDarkMode();
+                console.log('✅ Dark mode inicializado');
+                
+                // Event listeners
+                setupEventListeners();
+                console.log('✅ Event listeners configurados');
+                
+                console.log('✅ Fundación 97 lista!');
+            } catch (error) {
+                console.error('❌ Error durante la inicialización:', error);
+                console.error('Stack:', error.stack);
+            }
         });
         
         // ========================================
@@ -607,88 +678,167 @@
         
         async function loadFeaturedProjects() {
             try {
+                console.log('📊 Buscando data/proyectos.json...');
                 const response = await fetch('data/proyectos.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+                }
+                
                 const data = await response.json();
+                console.log('✅ JSON cargado. Total proyectos:', data.projects.length);
                 
                 // Tomar los primeros 3 proyectos
                 const featured = data.projects.slice(0, 3);
+                console.log('📌 Mostrando primeros 3 proyectos:', featured.map(p => p.title));
                 
                 const container = document.getElementById('featuredProjects');
-                container.innerHTML = featured.map(project => createProjectCard(project)).join('');
+                if (!container) {
+                    throw new Error('Container #featuredProjects not found in DOM');
+                }
+                
+                const html = featured.map(project => createProjectCard(project)).join('');
+                container.innerHTML = html;
+                console.log('✅ Tarjetas de proyectos renderizadas');
                 
                 // Cargar stats globales
-                document.getElementById('totalDonated').textContent = `$${(data.stats.totalRaised / 1000).toFixed(0)}K`;
-                document.getElementById('totalDonors').textContent = data.stats.totalDonors.toLocaleString();
+                const totalDonated = document.getElementById('totalDonated');
+                const totalDonors = document.getElementById('totalDonors');
+                
+                if (totalDonated) {
+                    totalDonated.textContent = `$${(data.stats.totalRaised / 1000).toFixed(0)}K`;
+                }
+                if (totalDonors) {
+                    totalDonors.textContent = data.stats.totalDonors.toLocaleString();
+                }
+                console.log('✅ Stats actualizadas');
                 
             } catch (error) {
-                console.error('Error cargando proyectos:', error);
+                console.error('❌ Error cargando proyectos:', error.message);
+                console.error('Stack:', error.stack);
                 const container = document.getElementById('featuredProjects');
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-red-500">
-                        <span class="material-icons-round text-6xl mb-4">error_outline</span>
-                        <p>Error cargando proyectos. Por favor, recarga la página.</p>
-                    </div>
-                `;
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <span class="material-icons-round text-6xl mb-4 text-red-500">error_outline</span>
+                            <p class="text-red-500 font-semibold">Error cargando proyectos</p>
+                            <p class="text-slate-500 text-sm mt-2">${error.message}</p>
+                            <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg">
+                                Reintentar
+                            </button>
+                        </div>
+                    `;
+                }
             }
         }
         
         function createProjectCard(project) {
             const percentage = Math.round((project.raised / project.goal) * 100);
             
-            const urgencyColors = {
-                'critica': 'red',
-                'alta': 'orange',
-                'media': 'yellow'
+            // Determinar color de urgencia
+            const urgencyBg = {
+                'critica': '#EF4444',
+                'alta': '#F97316',
+                'media': '#EAB308'
             };
             
-            return `
-                <div class="glass rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            // Determinar estado visual del proyecto
+            let statusBadge = '';
+            let statusColor = '#6B7280';
+            
+            if (percentage === 100) {
+                statusBadge = '✓ Financiado';
+                statusColor = '#10B981';
+            } else if (percentage >= 90) {
+                statusBadge = '🔥 Casi ahí';
+                statusColor = '#F59E0B';
+            } else if (percentage >= 50) {
+                statusBadge = '⏳ En progreso';
+                statusColor = '#3B82F6';
+            } else {
+                statusBadge = '🚀 Iniciando';
+                statusColor = '#8B5CF6';
+            }
+            
+            // Determinar si está completado
+            const isCompleted = percentage >= 100;
+            
+            return \`
+                <div class="glass rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-green-500 px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1">
+                        <img src="\${project.image}" alt="\${project.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Status badge - Top Right -->
+                        <div class="absolute top-4 right-4 flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold text-white transition-all duration-300" style="background: linear-gradient(135deg, \${statusColor}, \${statusColor}dd);">
+                            <span style="display: inline-block; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; opacity: 1;">\${statusBadge.split(' ')[0]}</span>
+                            <span>\${statusBadge.split(' ').slice(1).join(' ')}</span>
+                        </div>
+                        
+                        <!-- Verified badge - Top Left -->
+                        <div class="absolute top-4 left-4 bg-green-500 hover:bg-green-600 px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1 transition-colors">
                             <span class="material-icons-round text-sm">verified</span>
-                            Verificado
+                            <span>Verificado</span>
                         </div>
-                        <div class="absolute top-4 left-4 bg-${urgencyColors[project.urgency]}-500 px-3 py-1 rounded-full text-xs font-bold text-white uppercase">
-                            ${project.urgency}
+                        
+                        <!-- Urgency badge - Bottom Left -->
+                        <div class="absolute bottom-4 left-4 px-3 py-1 rounded-lg text-xs font-bold text-white uppercase backdrop-blur-sm" style="background: \${urgencyBg[project.urgency]}cc;">
+                            \${project.urgency}
                         </div>
+                        
+                        <!-- Overlay effect when completed -->
+                        \${isCompleted ? '<div class="absolute inset-0 bg-green-500 opacity-0 group-hover:opacity-10 transition-all duration-300"></div>' : ''}
                     </div>
                     
                     <div class="p-6">
-                        <div class="text-primary text-sm font-semibold mb-2 uppercase">${project.category}</div>
-                        <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">${project.title}</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">${project.shortDescription}</p>
+                        <div class="text-primary text-sm font-semibold mb-2 uppercase tracking-wide">\${project.category}</div>
+                        <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-primary transition-colors">\${project.title}</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">\${project.shortDescription}</p>
                         
                         <div class="flex items-center text-sm text-slate-500 mb-4">
                             <span class="material-icons-round text-sm mr-1">location_on</span>
-                            ${project.location.country}
+                            \${project.location.country}
                         </div>
                         
+                        <!-- Progress Section -->
                         <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-slate-600 dark:text-slate-400">Progreso</span>
-                                <span class="font-bold text-slate-900 dark:text-white">${percentage}%</span>
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span class="text-slate-600 dark:text-slate-400 font-semibold">Financiación</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-lg" style="color: \${statusColor}">\${percentage}%</span>
+                                    \${isCompleted ? '<span class="material-icons-round text-green-500 text-sm">check_circle</span>' : ''}
+                                </div>
                             </div>
-                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-2">
-                                <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                            
+                            <!-- Progress bar with glow effect -->
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 mb-3 overflow-hidden shadow-sm">
+                                <div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-700 shadow-lg shadow-primary/50" style="width: \${percentage}%; box-shadow: 0 0 10px \${statusColor}66;"></div>
                             </div>
+                            
+                            <!-- Amount info -->
                             <div class="flex justify-between text-sm">
-                                <span class="font-bold text-primary">${project.raised.toLocaleString()} €</span>
-                                <span class="text-slate-500">de ${project.goal.toLocaleString()} €</span>
+                                <span class="font-bold text-primary">\${project.raised.toLocaleString()} €</span>
+                                <span class="text-slate-500 dark:text-slate-400">\${Math.ceil(project.goal - project.raised).toLocaleString()} € restante</span>
                             </div>
                         </div>
                         
+                        <!-- Donors count -->
+                        <div class="flex items-center gap-2 text-sm text-slate-500 mb-5 pb-4 border-b border-slate-200 dark:border-slate-700">
+                            <span class="material-icons-round text-sm">people</span>
+                            <span><strong>\${project.donors.toLocaleString()}</strong> donantes</span>
+                        </div>
+                        
+                        <!-- Action buttons -->
                         <div class="flex gap-3">
-                            <button onclick="donateToProject(${project.id})" class="flex-1 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-lg font-bold transition-colors">
+                            <button onclick="donateToProject(\${project.id})" class="flex-1 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:-translate-y-1 text-white px-4 py-3 rounded-lg font-bold transition-all duration-300 active:scale-95">
                                 Donar Ahora
                             </button>
-                            <a href="pages/proyectos.html" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-4 py-3 rounded-lg transition-colors flex items-center justify-center">
+                            <a href="pages/proyectos.html" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-4 py-3 rounded-lg transition-colors flex items-center justify-center hover:-translate-y-1 duration-300">
                                 <span class="material-icons-round text-slate-600 dark:text-slate-300">arrow_forward</span>
                             </a>
                         </div>
                     </div>
                 </div>
-            `;
+            \`;
         }
         
         async function donateToProject(projectId) {
@@ -712,6 +862,11 @@
         function initializeDarkMode() {
             const darkModeToggle = document.getElementById('darkModeToggle');
             const html = document.documentElement;
+            
+            if (!darkModeToggle) {
+                console.warn('⚠️ darkModeToggle not found');
+                return;
+            }
             
             // Verificar preferencia guardada
             const isDark = localStorage.getItem('darkMode') === 'true';

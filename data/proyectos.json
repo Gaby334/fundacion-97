@@ -305,10 +305,10 @@
       "images": [
         "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800"
       ],
-      "raised": 15000,
+      "raised": 10000,
       "goal": 50000,
       "currency": "EUR",
-      "donors": 89,
+      "donors": 68,
       "location": {
         "country": "India",
         "region": "Mumbai",
@@ -388,8 +388,8 @@
   ],
   "stats": {
     "totalProjects": 5,
-    "totalRaised": 247000,
-    "totalDonors": 1164,
-    "averageTransparency": 96.6
+    "totalRaised": 252000,
+    "totalDonors": 1545,
+    "averageTransparency": 96.8
   }
 }

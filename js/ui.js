@@ -426,13 +426,13 @@ class UIManager {
 }
 
 // Inicializar UI Manager globalmente
-const uiManager = new UIManager();
+window.uiManager = new UIManager();
 
 // Auto-inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => uiManager.init());
+    document.addEventListener('DOMContentLoaded', () => window.uiManager.init());
 } else {
-    uiManager.init();
+    window.uiManager.init();
 }
 
 // Agregar animaciones CSS al head

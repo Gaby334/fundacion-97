@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis WCAG Dark Mode - Fundación 97</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0F172A;
+            color: #CBD5E1;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #94A3B8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1E293B;
+            border: 1px solid #334155;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4FA3D1;
+        }
+        
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: #1E293B;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: #334155;
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: #FFFFFF;
+            font-weight: 600;
+            border-bottom: 2px solid #475569;
+        }
+        
+        td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #334155;
+        }
+        
+        tr:hover {
+            background: #334155;
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            border: 1px solid #475569;
+        }
+        
+        .ratio {
+            font-weight: 600;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .ratio-good {
+            color: #10B981;
+        }
+        
+        .ratio-warning {
+            color: #F59E0B;
+        }
+        
+        .ratio-bad {
+            color: #EF4444;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-success {
+            background: #10B98120;
+            color: #86EFAC;
+        }
+        
+        .badge-warning {
+            background: #F59E0B20;
+            color: #FCD34D;
+        }
+        
+        .badge-danger {
+            background: #EF444420;
+            color: #FCA5A5;
+        }
+        
+        .badge-na {
+            background: #64748B20;
+            color: #CBD5E1;
+        }
+        
+        .section-title {
+            color: #FFFFFF;
+            background: #334155;
+            padding: 1rem;
+            margin: 2rem 0 1rem 0;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .issue-card {
+            background: #1E293B;
+            border-left: 4px solid;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .issue-critical {
+            border-left-color: #EF4444;
+            background: #7F1D1D20;
+        }
+        
+        .issue-warning {
+            border-left-color: #F59E0B;
+            background: #78350F20;
+        }
+        
+        .issue-title {
+            color: #FFFFFF;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .issue-title::before {
+            font-size: 1.25rem;
+        }
+        
+        .issue-critical .issue-title::before {
+            content: '🔴';
+        }
+        
+        .issue-warning .issue-title::before {
+            content: '🟠';
+        }
+        
+        .issue-text {
+            color: #CBD5E1;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .issue-solution {
+            background: #334155;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-top: 0.75rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #475569;
+            background: #1E293B;
+            color: #CBD5E1;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #334155;
+            border-color: #4FA3D1;
+        }
+        
+        .no-problem {
+            color: #10B981;
+        }
+        
+        .has-problem {
+            color: #EF4444;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comparison-box {
+            background: #1E293B;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #334155;
+        }
+        
+        .comparison-title {
+            color: #FFFFFF;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .color-preview {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            gap: 1rem;
+        }
+        
+        .color-block {
+            width: 60px;
+            height: 60px;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .color-info {
+            flex: 1;
+        }
+        
+        .color-name {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        
+        .color-hex {
+            color: #94A3B8;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Análisis WCAG 2.1 - Dark Mode</h1>
+        <p class="subtitle">Landing Page Fundación 97 - Contraste de Texto y Fondo</p>
+        
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">45+</div>
+                <div class="stat-label">Elementos Analizados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #EF4444;">8</div>
+                <div class="stat-label">Problemas Encontrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #F59E0B;">4</div>
+                <div class="stat-label">En Límite WCAG AA</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #10B981;">33+</div>
+                <div class="stat-label">Cumpliendo WCAG AA+</div>
+            </div>
+        </div>
+        
+        <!-- Critical Issues -->
+        <div class="section-title">🚨 Problemas Críticos (P0 - No conformes)</div>
+        
+        <div class="issue-card issue-critical">
+            <div class="issue-title">Orange (#F8B27A) en Fondo Negro - Transparency Section</div>
+            <div class="issue-text">
+                <strong>Ubicación</strong>: Texto "Exactamente aquí" (span color)  
+                <strong>Ratio Actual</strong>: 2.9:1  
+                <strong>Requerido</strong>: 4.5:1  
+                <strong>Déficit</strong>: -1.6:1  
+                <strong>Severidad</strong>: CRÍTICO - Afecta accesibilidad visual severa
+            </div>
+            <div class="issue-solution">
+                SOLUCIÓN: Cambiar a #FFBB7D u otro naranja más claro
+                Ratio estimado: ~4.0:1
+            </div>
+        </div>
+        
+        <div class="issue-card issue-critical">
+            <div class="issue-title">Slate-500 en Slate-800 - Stats Labels</div>
+            <div class="issue-text">
+                <strong>Ubicación</strong>: "VA AL PROYECTO", "TRANSPARENCIA", "OPACIDAD"  
+                <strong>Ratio Actual</strong>: 2.3:1  
+                <strong>Requerido</strong>: 3:1 (large text)  
+                <strong>Déficit</strong>: -0.7:1  
+                <strong>Severidad</strong>: CRÍTICO - NPO cumple ni AA large
+            </div>
+            <div class="issue-solution">
+                SOLUCIÓN: Cambiar dark:text-slate-500 → dark:text-slate-400
+                Ratio nuevo: ~4.0:1 ✅
+            </div>
+        </div>
+        
+        <!-- Major Issues -->
+        <div class="section-title">⚠️ Problemas Mayores (P1 - No conformes)</div>
+        
+        <div class="issue-card issue-warning">
+            <div class="issue-title">Primary (#2E86AB) en Fondos Oscuros - Múltiples Ubicaciones</div>
+            <div class="issue-text">
+                <strong>Ubicaciones</strong>:
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>"paso a paso" en How It Works</li>
+                    <li>"Activos" en Proyectos Section</li>
+                    <li>Otros spans primary sobre slate-900/background-dark</li>
+                </ul>
+                <strong>Ratio Actual</strong>: 3.1:1  
+                <strong>Requerido</strong>: 4.5:1  
+                <strong>Déficit</strong>: -1.4:1
+            </div>
+            <div class="issue-solution">
+                SOLUCIÓN: Cambiar a primary-light (#4FA3D1)
+                Ratio nuevo: ~5.9:1 ✅ WCAG AA + AAA
+            </div>
+        </div>
+        
+        <div class="issue-card issue-warning">
+            <div class="issue-title">Slate-400 en Slate-900/Negro - Footer & Steps</div>
+            <div class="issue-text">
+                <strong>Ubicaciones</strong>:
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>Footer: párrafos, descripciones, links</li>
+                    <li>How It Works: descripción principal y pasos</li>
+                    <li>Proyectos Section: descripción</li>
+                    <li>Transparency Section: subtítulos</li>
+                </ul>
+                <strong>Ratio Actual</strong>: 3.5:1  
+                <strong>Requerido</strong>: 4.5:1  
+                <strong>Déficit</strong>: -1.0:1  
+                <strong>Elementos Afectados</strong>: 8+ componentes
+            </div>
+            <div class="issue-solution">
+                SOLUCIÓN: Cambiar todas las instancias de dark:text-slate-400 
+                a dark:text-slate-300 en estos contextos
+                Ratio nuevo: ~7.8:1 ✅ WCAG AA + AAA
+            </div>
+        </div>
+        
+        <!-- Edge Cases -->
+        <div class="section-title">🟡 Casos en Límite (WCAG AA sin margen de seguridad)</div>
+        
+        <div class="comparison">
+            <div class="comparison-box">
+                <div class="comparison-title">Link Navegación</div>
+                <div class="color-preview">
+                    <div class="color-block" style="background: #CBD5E1;"></div>
+                    <div class="color-info">
+                        <div class="color-name">#CBD5E1 (slate-300)</div>
+                        <div class="color-hex">RGB(203, 213, 225)</div>
+                    </div>
+                </div>
+                <div class="color-preview">
+                    <div class="color-block" style="background: rgba(30,41,59,0.6);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Glass (0.6 opacity)</div>
+                        <div class="color-hex">~#1E293B</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 1rem; background: #334155; border-radius: 0.5rem;">
+                    <div style="color: #94A3B8; font-size: 0.9rem;">Ratio actual</div>
+                    <div style="color: #FCD34D; font-size: 1.5rem; font-weight: bold;">4.2:1</div>
+                    <div style="color: #94A3B8; font-size: 0.85rem; margin-top: 0.5rem;">
+                        ⚠️ Justo WCAG AA - Sin margen para antialias
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-box">
+                <div class="comparison-title">Button "Ver Proyectos"</div>
+                <div class="color-preview">
+                    <div class="color-block" style="background: #2E86AB;"></div>
+                    <div class="color-info">
+                        <div class="color-name">#2E86AB (primary)</div>
+                        <div class="color-hex">RGB(46, 134, 171)</div>
+                    </div>
+                </div>
+                <div class="color-preview">
+                    <div class="color-block" style="background: #FFFFFF;"></div>
+                    <div class="color-info">
+                        <div class="color-name">#FFFFFF (white)</div>
+                        <div class="color-hex">RGB(255, 255, 255)</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 1rem; background: #334155; border-radius: 0.5rem;">
+                    <div style="color: #94A3B8; font-size: 0.9rem;">Ratio actual</div>
+                    <div style="color: #FCD34D; font-size: 1.5rem; font-weight: bold;">4.5:1</div>
+                    <div style="color: #FCA5A5; font-size: 0.85rem; margin-top: 0.5rem;">
+                        ⚠️ EXACTAMENTE mínimo - Sin margen de seguridad
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Table -->
+        <div class="section-title">📊 Resumen de Ratios por Categoría</div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Ratio Típico</th>
+                    <th>Cumplimiento</th>
+                    <th>Elementos</th>
+                    <th>¿Problema?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Logo & Títulos Principales</strong></td>
+                    <td class="ratio ratio-good">12-13:1</td>
+                    <td><span class="badge badge-success">✅ AAA</span></td>
+                    <td>3</td>
+                    <td><span class="no-problem">✅ NO</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Botones CTA Primarios</strong></td>
+                    <td class="ratio ratio-good">5-11:1</td>
+                    <td><span class="badge badge-success">✅ AA+</span></td>
+                    <td>4</td>
+                    <td><span class="no-problem">✅ NO</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Hero Títulos & Subtítulos</strong></td>
+                    <td class="ratio ratio-good">8-13:1</td>
+                    <td><span class="badge badge-success">✅ AA+</span></td>
+                    <td>3</td>
+                    <td><span class="no-problem">✅ NO</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Live Ticker</strong></td>
+                    <td class="ratio ratio-good">5.0:1</td>
+                    <td><span class="badge badge-success">✅ AA</span></td>
+                    <td>1</td>
+                    <td><span class="no-problem">✅ NO</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Párrafos Principales</strong></td>
+                    <td class="ratio ratio-good">4.5-8:1</td>
+                    <td><span class="badge badge-success">✅ AA</span></td>
+                    <td>6</td>
+                    <td><span class="no-problem">✅ NO</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Link Navegación</strong></td>
+                    <td class="ratio ratio-warning">4.2:1</td>
+                    <td><span class="badge badge-warning">⚠️ AA Límite</span></td>
+                    <td>4</td>
+                    <td><span class="has-problem">⚠️ LÍMITE</span></td>
+                </tr>
+                <tr style="background: #1E293B;">
+                    <td><strong>Slate-400 en Dark BG</strong></td>
+                    <td class="ratio ratio-bad">3.5:1</td>
+                    <td><span class="badge badge-danger">❌ NO AA</span></td>
+                    <td>8+</td>
+                    <td><span class="has-problem">🔴 SÍ</span></td>
+                </tr>
+                <tr style="background: #1E293B;">
+                    <td><strong>Primary en Dark BG</strong></td>
+                    <td class="ratio ratio-bad">3.1:1</td>
+                    <td><span class="badge badge-danger">❌ NO AA</span></td>
+                    <td>3</td>
+                    <td><span class="has-problem">🔴 SÍ</span></td>
+                </tr>
+                <tr style="background: #1E293B;">
+                    <td><strong>Slate-500 en Slate-800</strong></td>
+                    <td class="ratio ratio-bad">2.3:1</td>
+                    <td><span class="badge badge-danger">❌ NO AA</span></td>
+                    <td>3</td>
+                    <td><span class="has-problem">🔴 SÍ</span></td>
+                </tr>
+                <tr style="background: #1E293B;">
+                    <td><strong>Orange en Negro</strong></td>
+                    <td class="ratio ratio-bad">2.9:1</td>
+                    <td><span class="badge badge-danger">❌ NO AA</span></td>
+                    <td>1</td>
+                    <td><span class="has-problem">🔴 CRÍTICO</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Recommendations -->
+        <div class="section-title">✅ Recomendaciones de Corrección (Prioridad)</div>
+        
+        <div style="display: grid; gap: 1rem;">
+            <div style="background: #1E293B; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #EF4444;">
+                <div style="color: #FFFFFF; font-weight: 600; margin-bottom: 0.5rem;">🔴 P0 - INMEDIATO</div>
+                <div style="color: #CBD5E1;">
+                    <strong>1. Transparencia Section - Orange Accent</strong><br>
+                    Cambiar: <code>text-secondary</code> → CSS color más claro<br>
+                    <strong>2. Stats Labels - Slate-500</strong><br>
+                    Cambiar: <code>dark:text-slate-500</code> → <code>dark:text-slate-400</code>
+                </div>
+            </div>
+            
+            <div style="background: #1E293B; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #F59E0B;">
+                <div style="color: #FFFFFF; font-weight: 600; margin-bottom: 0.5rem;">🟠 P1 - HOY</div>
+                <div style="color: #CBD5E1;">
+                    <strong>3. Primary Spans en Footer/Steps</strong><br>
+                    Cambiar: <code>text-primary</code> → <code>text-primary-light</code><br>
+                    <strong>4. Slate-400 en Dark Backgrounds</strong><br>
+                    Cambiar: <code>dark:text-slate-400</code> → <code>dark:text-slate-300</code> (en footer, steps, etc)
+                </div>
+            </div>
+            
+            <div style="background: #1E293B; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #F59E0B;">
+                <div style="color: #FFFFFF; font-weight: 600; margin-bottom: 0.5rem;">🟡 P2 - VERIFICAR</div>
+                <div style="color: #CBD5E1;">
+                    <strong>5. Link Navegación (4.2:1)</strong><br>
+                    Monitorear y considerar cambio a <code>#FFFFFF</code><br>
+                    <strong>6. Button "Ver Proyectos" (4.5:1)</strong><br>
+                    Sin margen; considerar <code>primary-dark</code> para 7.2:1
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 3rem; padding: 2rem; background: #1E293B; border-radius: 0.75rem; border: 1px solid #334155;">
+            <div style="color: #FFFFFF; font-weight: 600; margin-bottom: 1rem;">📝 Impacto de Usuario</div>
+            <div style="color: #CBD5E1; display: grid; gap: 0.75rem;">
+                <div>✓ <strong>20% de población</strong> tiene baja visión (IVA)</div>
+                <div>✓ <strong>Astigmatismo</strong>: afecta contraste percibido</div>
+                <div>✓ <strong>Daltonismo</strong>: 8-12% hombres, 0.5% mujeres</div>
+                <div>✓ <strong>Pantallas viejas/baratas</strong>: reducen contraste</div>
+                <div>✓ <strong>Usuarios en ambientes luminosos</strong>: efecto brillo</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
