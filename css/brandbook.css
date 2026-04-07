@@ -45,6 +45,10 @@
   color: var(--color-accent);
 }
 
+.text-secondary {
+  color: var(--color-secondary);
+}
+
 /* Fondos */
 .bg-primary {
   background-color: var(--color-primary);
@@ -77,6 +81,10 @@
 
 .border-light-blue {
   border-color: var(--color-light-blue);
+}
+
+.border-secondary {
+  border-color: var(--color-secondary);
 }
 
 /* Botones */
@@ -180,5 +188,7 @@ hr {
   :root {
     --color-background-light: #1C2A38;
     --color-surface-light: #2E3B4A;
+    --color-secondary: #F8B27A;
+    --color-accent: #F28F3B;
   }
 }

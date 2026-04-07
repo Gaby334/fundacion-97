@@ -25,115 +25,114 @@ class DonationsUI {
      */
     createDonationModal() {
         const modalHTML = `
-            <div id="donationModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-                <div class="bg-gradient-to-br from-slate-900 to-purple-900 border border-white/20 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div id="donationModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 transition-opacity duration-300">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-700">
                     <!-- Header -->
-                    <div class="p-6 border-b border-white/10">
+                    <div class="p-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-primary to-primary-dark rounded-t-2xl">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h2 class="text-2xl font-bold mb-2">Realizar Donación</h2>
-                                <p class="text-gray-400" id="modalProjectName">Proyecto</p>
+                                <h2 class="text-2xl font-bold text-white mb-1">Donar Ahora</h2>
+                                <p class="text-white/80 text-sm" id="modalProjectName">Fundación 97</p>
                             </div>
-                            <button onclick="donationsUI.closeModal()" class="text-gray-400 hover:text-white transition">
-                                <i class="fas fa-times text-2xl"></i>
+                            <button onclick="donationsUI.closeModal()" class="text-white/60 hover:text-white transition text-2xl leading-none">
+                                ✕
                             </button>
                         </div>
                     </div>
 
                     <!-- Body -->
-                    <div class="p-6 space-y-6">
+                    <div class="p-6 space-y-5">
                         <!-- Amount Input -->
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Cantidad a donar</label>
-                            <div class="flex gap-3">
+                            <label class="block text-sm font-bold text-slate-900 dark:text-white mb-2">Cantidad a donar</label>
+                            <div class="flex gap-2">
                                 <div class="flex-1 relative">
                                     <input 
                                         type="number" 
                                         id="donationAmount" 
                                         placeholder="100"
                                         min="1"
-                                        class="w-full bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:border-blue-500"
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white text-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                     >
-                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-bold">€</span>
                                 </div>
-                                <select id="currencySelect" class="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500">
+                                <select id="currencySelect" class="px-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-all">
                                     <option value="eur">EUR</option>
                                     <option value="eth">ETH</option>
                                     <option value="matic">MATIC</option>
                                 </select>
                             </div>
-                            <p class="text-sm text-gray-400 mt-2">Equivalente: <span id="equivalentAmount">~0.00 ETH</span></p>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">Equivalente: <span id="equivalentAmount" class="font-semibold text-primary">~0.00 ETH</span></p>
                         </div>
 
                         <!-- Quick amounts -->
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Cantidad sugerida</label>
+                            <label class="block text-sm font-bold text-slate-900 dark:text-white mb-2">Cantidades sugeridas</label>
                             <div class="grid grid-cols-4 gap-2">
-                                <button onclick="donationsUI.setAmount(25)" class="bg-white/10 hover:bg-white/20 py-2 rounded-lg transition">25€</button>
-                                <button onclick="donationsUI.setAmount(50)" class="bg-white/10 hover:bg-white/20 py-2 rounded-lg transition">50€</button>
-                                <button onclick="donationsUI.setAmount(100)" class="bg-white/10 hover:bg-white/20 py-2 rounded-lg transition">100€</button>
-                                <button onclick="donationsUI.setAmount(250)" class="bg-white/10 hover:bg-white/20 py-2 rounded-lg transition">250€</button>
+                                <button onclick="donationsUI.setAmount(25)" class="bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-slate-900 dark:text-white py-2 rounded-lg font-semibold text-sm transition">25€</button>
+                                <button onclick="donationsUI.setAmount(50)" class="bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-slate-900 dark:text-white py-2 rounded-lg font-semibold text-sm transition">50€</button>
+                                <button onclick="donationsUI.setAmount(100)" class="bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-slate-900 dark:text-white py-2 rounded-lg font-semibold text-sm transition">100€</button>
+                                <button onclick="donationsUI.setAmount(250)" class="bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-slate-900 dark:text-white py-2 rounded-lg font-semibold text-sm transition">250€</button>
                             </div>
                         </div>
 
                         <!-- Distribution breakdown -->
-                        <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                            <h3 class="font-semibold mb-3 flex items-center">
-                                <i class="fas fa-chart-pie text-blue-400 mr-2"></i>
-                                Distribución de tu donación
+                        <div class="bg-accent/10 dark:bg-accent/5 border border-accent/30 rounded-lg p-4">
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-3 flex items-center">
+                                <span class="material-symbols-outlined text-lg text-accent mr-2">pie_chart</span>
+                                Distribución
                             </h3>
                             <div class="space-y-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-400">Al proyecto (97%)</span>
-                                    <span class="font-bold text-green-400" id="projectAmount">0 €</span>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-700 dark:text-slate-300">Al proyecto (97%)</span>
+                                    <span class="font-bold text-primary" id="projectAmount">0 €</span>
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-400">Costes de plataforma (3%)</span>
-                                    <span class="font-bold" id="platformAmount">0 €</span>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-700 dark:text-slate-300">Operación (3%)</span>
+                                    <span class="font-bold text-slate-900 dark:text-slate-100" id="platformAmount">0 €</span>
                                 </div>
-                                <div class="w-full bg-gray-700 rounded-full h-2 mt-3">
-                                    <div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 97%"></div>
+                                <div class="w-full bg-slate-300 dark:bg-slate-600 rounded-full h-2 mt-2">
+                                    <div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 97%;"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Wallet status -->
-                        <div id="walletStatus" class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                        <div id="walletStatus" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-700/50 rounded-lg p-4">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <i class="fas fa-wallet text-yellow-400 text-xl mr-3"></i>
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-500">account_balance_wallet</span>
                                     <div>
-                                        <div class="font-semibold">Wallet no conectada</div>
-                                        <div class="text-sm text-gray-400">Conecta tu wallet para continuar</div>
+                                        <div class="font-semibold text-slate-900 dark:text-white text-sm">Wallet no conectada</div>
+                                        <div class="text-xs text-slate-600 dark:text-slate-400">Conecta tu wallet para continuar</div>
                                     </div>
                                 </div>
-                                <button onclick="donationsUI.connectWallet()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-semibold transition">
+                                <button onclick="donationsUI.connectWallet()" class="bg-primary hover:bg-primary-dark text-white px-3 py-1.5 rounded-lg font-semibold text-sm transition shrink-0">
                                     Conectar
                                 </button>
                             </div>
                         </div>
 
                         <!-- Blockchain info -->
-                        <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                            <h3 class="font-semibold mb-2 flex items-center">
-                                <i class="fas fa-cube text-purple-400 mr-2"></i>
-                                Verificación Blockchain
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-300 dark:border-blue-700/50 rounded-lg p-4">
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1 flex items-center">
+                                <span class="material-symbols-outlined text-lg text-primary mr-2">shield_verified</span>
+                                Verificado en Blockchain
                             </h3>
-                            <p class="text-sm text-gray-400">
-                                Tu donación será registrada en Polygon blockchain. 
-                                Recibirás un recibo de seguimiento único e inmutable.
+                            <p class="text-xs text-slate-700 dark:text-slate-300">
+                                Tu donación será registrada en Polygon de forma verificable e inmutable.
                             </p>
                         </div>
                     </div>
 
                     <!-- Footer -->
-                    <div class="p-6 border-t border-white/10 flex gap-3">
-                        <button onclick="donationsUI.closeModal()" class="flex-1 bg-white/10 hover:bg-white/20 py-3 rounded-lg font-semibold transition">
+                    <div class="p-6 border-t border-slate-200 dark:border-slate-700 flex gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-b-2xl">
+                        <button onclick="donationsUI.closeModal()" class="flex-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white py-3 rounded-lg font-semibold transition text-sm">
                             Cancelar
                         </button>
-                        <button id="confirmDonationBtn" onclick="donationsUI.processDonation()" class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                            <i class="fas fa-heart mr-2"></i>
-                            Donar Ahora
+                        <button id="confirmDonationBtn" onclick="donationsUI.processDonation()" class="flex-1 bg-primary hover:bg-primary-dark text-white py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2" disabled>
+                            <span class="material-symbols-outlined">favorite</span>
+                            Donar
                         </button>
                     </div>
                 </div>
@@ -148,10 +147,22 @@ class DonationsUI {
      * Abrir modal de donación
      */
     openModal(project) {
-        this.currentProject = project;
-        document.getElementById('modalProjectName').textContent = project.title;
+        // Si no hay proyecto, mostrar el texto por defecto "Fundación 97"
+        if (project) {
+            this.currentProject = project;
+            document.getElementById('modalProjectName').textContent = project.title || project.name || 'Fundación 97';
+        } else {
+            this.currentProject = null;
+            document.getElementById('modalProjectName').textContent = 'Fundación 97';
+        }
+        
         this.modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        
+        // Hacer visible el modal con transición
+        setTimeout(() => {
+            this.modal.style.opacity = '1';
+        }, 10);
     }
 
     /**
@@ -238,22 +249,28 @@ class DonationsUI {
         // Mostrar loader
         const btn = document.getElementById('confirmDonationBtn');
         const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando...';
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">hourglass_empty</span>Procesando...';
         btn.disabled = true;
         
         try {
             // Convertir EUR a ETH (simulado)
             const ethAmount = amount / 3300;
             
-            // Realizar donación
-            const result = await this.tracker.donate(this.currentProject.id, ethAmount);
+            // Si hay proyecto, donar a ese proyecto, si no, es una donación general
+            const projectId = this.currentProject?.id || 0;
             
-            this.showNotification('¡Donación exitosa!', 'success');
+            // Realizar donación
+            const result = await this.tracker.donate(projectId, ethAmount);
+            
+            this.showNotification('¡Donación exitosa! Gracias por tu apoyo 💜', 'success');
             this.closeModal();
             
-            // Redirigir a dashboard con el hash
+            // Redirigir a dashboard con el hash después de 2 segundos
             setTimeout(() => {
-                window.location.href = `dashboard.html?tx=${result.txHash}`;
+                const redirectUrl = this.currentProject 
+                    ? `pages/dashboard.html?tx=${result.txHash}&project=${projectId}`
+                    : `pages/dashboard.html?tx=${result.txHash}`;
+                window.location.href = redirectUrl;
             }, 2000);
             
         } catch (error) {
